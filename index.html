@@ -10,102 +10,100 @@
 <body>
 
     <header class="sticky-header">
-        <div class="top-bar">
+        <div class="top-nav">
             <div class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="logo">My Hardware Shop</div>
             <div class="cart-btn" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i></div>
         </div>
-        <div class="search-box">
-            <input type="text" id="search-bar" placeholder="What are you looking for?" onkeyup="filterProducts()">
-            <button class="search-submit"><i class="fas fa-search"></i></button>
+        <div class="search-section">
+            <div class="search-input-group">
+                <input type="text" id="search-bar" placeholder="What are you looking for?" onkeyup="filterProducts()">
+                <button class="search-action-btn"><i class="fas fa-search"></i></button>
+            </div>
         </div>
-        <div class="showroom-banner">
-            <i class="fas fa-store"></i> <span>Showroom: Visit our Chandpara store</span>
+        <div class="showroom-alert">
+            <i class="fas fa-store"></i> <span>Visit our showroom at Main Road, Chandpara</span>
         </div>
     </header>
 
-    <main class="content">
+    <main class="main-content">
         <div class="hero-banner">
-            <img src="images/hardware_banner.jpg" alt="Hardware Banner">
-            <div class="banner-text">
+            <img src="images/hardware_banner.jpg" alt="Hardware Store Banner">
+            <div class="hero-overlay">
                 <h2>Hardware</h2>
                 <p>Home > Hardware</p>
             </div>
         </div>
 
-        <section class="section">
-            <h3 class="section-heading">Shop by Category</h3>
-            <div class="category-grid">
-                <div class="cat-card" onclick="setCategory('tools')">
+        <section class="home-section">
+            <h3 class="section-header">Shop by Category</h3>
+            <div class="cat-visual-grid">
+                <div class="cat-item-card" onclick="setCategory('tools')">
                     <img src="images/tools-cat.jpg" alt="Tools">
                     <span>Tools</span>
                 </div>
-                <div class="cat-card" onclick="setCategory('electrical')">
+                <div class="cat-item-card" onclick="setCategory('electrical')">
                     <img src="images/elec-cat.jpg" alt="Electrical">
                     <span>Electrical</span>
                 </div>
-                <div class="cat-card" onclick="setCategory('paint')">
+                <div class="cat-item-card" onclick="setCategory('paint')">
                     <img src="images/paint-cat.jpg" alt="Paint">
                     <span>Paints</span>
                 </div>
-                <div class="cat-card" onclick="setCategory('hardware')">
+                <div class="cat-item-card" onclick="setCategory('hardware')">
                     <img src="images/hard-cat.jpg" alt="Hardware">
-                    <span>General Hardware</span>
+                    <span>Hardware</span>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="featured-section">
-            <h3 class="section-heading">Best Sellers</h3>
-            <div id="featured-list" class="product-grid"></div>
+        <section id="featured-section" class="home-section">
+            <h3 class="section-header">Best Sellers</h3>
+            <div id="featured-list" class="pro-product-grid"></div>
         </section>
 
-        <section class="section">
-            <h3 class="section-heading">All Products</h3>
-            <div id="product-list" class="product-grid"></div>
+        <section class="home-section">
+            <h3 class="section-header">All Products</h3>
+            <div id="product-list" class="pro-product-grid"></div>
         </section>
     </main>
 
     <footer>
-        <div class="footer-wrap">
-            <div class="f-section">
-                <button class="f-acc" onclick="toggleFooter(this)">Contacts Details <i class="fas fa-chevron-down"></i></button>
-                <div class="f-panel">
+        <div class="footer-accordion">
+            <div class="footer-item">
+                <button class="footer-tab" onclick="toggleFPanel(this)">Contact Details <i class="fas fa-plus"></i></button>
+                <div class="footer-panel">
                     <p><i class="fas fa-phone"></i> +91 9547675034</p>
-                    <p><i class="fas fa-envelope"></i> contact@yourshop.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, North 24 Parganas</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara</p>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
+        <div class="legal-footer">
             <p>Copyright © 2026 My Hardware Shop. Designed by Dik.</p>
         </div>
     </footer>
 
-    <div id="sidebar" class="overlay-panel left">
-        <span class="close-x" onclick="toggleSidebar()">&times;</span>
-        <div class="side-content">
-            <h4>All Products</h4>
-            <ul id="category-list">
-                <li onclick="setCategory('all')">All Hardware</li>
-                <li onclick="setCategory('tools')">Tools</li>
-                <li onclick="setCategory('electrical')">Electrical</li>
-                <li onclick="setCategory('paint')">Paints</li>
-            </ul>
+    <div id="sidebar" class="side-panel-left">
+        <div class="side-header">Menu <span onclick="toggleSidebar()">&times;</span></div>
+        <ul class="side-links">
+            <li onclick="setCategory('all')">All Products</li>
+            <li onclick="setCategory('tools')">Tools</li>
+            <li onclick="setCategory('electrical')">Electrical</li>
+            <li onclick="setCategory('paint')">Paints</li>
+        </ul>
+    </div>
+
+    <div id="cart-panel" class="side-panel-right">
+        <div class="cart-header">Your Cart <span onclick="toggleCart()">&times;</span></div>
+        <div id="cart-items-list"></div>
+        <div class="cart-summary">
+            <div class="total-row">Total: <span id="cart-total-amt">₹0</span></div>
+            <button class="checkout-btn-wa" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+            <button class="clear-all-link" onclick="clearCart()">Clear All Items</button>
         </div>
     </div>
 
-    <div id="cart-panel" class="overlay-panel right">
-        <div class="cart-header">
-            <h3>Your Order List</h3>
-            <button onclick="clearCart()" class="clear-btn">Clear All</button>
-        </div>
-        <div id="cart-items"></div>
-        <div class="cart-total" id="cart-total">Total: ₹0</div>
-        <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
-    </div>
-
-    <div id="productModal" class="modal"></div>
+    <div id="productModal" class="modal-overlay"></div>
 
     <script src="app.js"></script>
 </body>
