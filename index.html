@@ -10,18 +10,35 @@
 
     <header>
         <div class="nav-container">
-            <h1>Ashirbad Hardware</h1>
+            <div class="shop-branding">
+                <h1>My Hardware Shop</h1>
+                <p>Quality Tools & Electricals in Chandpara</p>
+            </div>
+            
             <div class="dropdown">
-                <button class="dropbtn">Shop Info ▼</button>
+                <button class="dropbtn">Explore My Shop ▼</button>
                 <div class="dropdown-content">
-                    <p><strong>About:</strong> Quality tools and electricals serving Chandpara.</p>
+                    <div class="info-section">
+                        <h4>📍 Our Location</h4>
+                        <p>Main Road, Chandpara, North 24 Parganas</p>
+                        <a href="https://www.google.com/maps/search/Ashirbad+Hardware+Chandpara" target="_blank" class="map-link">View on Google Maps</a>
+                    </div>
+                    
+                    <div class="gallery-section">
+                        <h4>📸 Shop Gallery</h4>
+                        <div class="mini-gallery">
+                            <img src="images/shop_front.jpg" alt="Shop Front" onclick="openLightbox(999)">
+                            <img src="images/inside_shop.jpg" alt="Inside View" onclick="openLightbox(998)">
+                            <img src="images/stock_display.jpg" alt="Stock Display" onclick="openLightbox(997)">
+                        </div>
+                        <p class="gallery-note">Captured on Nikon Z50 Mark II</p>
+                    </div>
                     <hr>
-                    <p><strong>Location:</strong> Main Road, Chandpara, North 24 Parganas</p>
                     <p><strong>Contact:</strong> 9547675034</p>
                 </div>
             </div>
         </div>
-        <p>Quality Hardware Essentials in Chandpara</p>
+        
         <div class="search-container">
             <input type="text" id="search-bar" placeholder="Search brands (Asian Paints, Finolex...)" onkeyup="filterProducts()">
         </div>
@@ -43,9 +60,7 @@
                 <h2 class="section-title">⭐ Best Sellers</h2>
                 <div id="featured-list" class="grid-container"></div>
             </section>
-
             <hr class="section-divider">
-
             <h2 class="section-title">All Products</h2>
             <div id="product-list" class="grid-container"></div>
         </main>
@@ -70,5 +85,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-
-
