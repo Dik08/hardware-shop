@@ -1,92 +1,85 @@
+/* 1. Global Variables */
 :root {
     --primary: #2c3e50;
-    --accent: #e67e22;
+    --accent: #e67e22; /* Hardware Orange */
     --bg: #f8f9fa;
     --white: #ffffff;
     --text: #333333;
+    --success: #27ae60;
+    --danger: #e74c3c;
 }
 
 * { box-sizing: border-box; }
 
 body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg);
     margin: 0;
     padding-bottom: 120px;
 }
 
+/* 2. Header & Dropdown */
 header { background: var(--primary); color: white; padding: 20px; text-align: center; }
 .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; }
 .dropbtn { background-color: var(--accent); color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
 .dropdown { position: relative; display: inline-block; }
 .dropdown-content { 
-    display: none; 
-    position: absolute; 
-    right: 0; 
-    background-color: white; 
-    min-width: 250px; 
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
-    z-index: 1001; 
-    border-radius: 8px; 
-    padding: 15px; 
-    color: #333; 
-    text-align: left; 
+    display: none; position: absolute; right: 0; background-color: white; 
+    min-width: 250px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
+    z-index: 1001; border-radius: 8px; padding: 15px; color: #333; text-align: left; 
 }
 .dropdown:hover .dropdown-content { display: block; }
 
+/* 3. Layout Wrapper */
 .main-wrapper { display: flex; max-width: 1400px; margin: 0 auto; padding: 20px; }
-.sidebar { 
-    width: 220px; 
-    padding: 20px; 
-    background: white; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-    height: fit-content; 
-    position: sticky; 
-    top: 20px; 
-}
+.sidebar { width: 220px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 20px; }
 .cat-item { padding: 12px; cursor: pointer; border-radius: 6px; font-weight: 500; transition: 0.3s; }
 .cat-item.active { background: var(--primary); color: white; }
 .cat-item:hover:not(.active) { background: #eee; }
 
+/* 4. Product Cards & Stock Badges */
 .section-title { font-size: 1.4rem; border-left: 5px solid var(--accent); padding-left: 10px; margin: 20px 0; }
-#featured-section { background: #fff8f0; padding: 15px; border-radius: 15px; border: 1px dashed var(--accent); }
-.featured-grid, .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+.grid-container, .featured-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 
 .product-card { 
-    background: var(--white); 
-    border-radius: 12px; 
-    padding: 15px; 
-    text-align: center; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-    border: 1px solid #eee; 
-    transition: 0.3s;
+    background: var(--white); border-radius: 12px; padding: 15px; text-align: center; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; transition: 0.3s;
+    position: relative;
 }
 .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-.product-card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 10px; }
+.product-card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 10px; cursor: zoom-in; }
 
-.action-row { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 10px; }
-.qty-input { width: 50px; padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
-.add-btn { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
-#cart-container { 
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    width: 320px; 
-    background: white; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
-    padding: 20px; 
-    border-top: 6px solid var(--accent); 
-    z-index: 1000; 
+.stock-badge { 
+    font-size: 0.7rem; padding: 3px 8px; border-radius: 12px; 
+    font-weight: bold; position: absolute; top: 10px; left: 10px; 
 }
-.cart-header { display: flex; justify-content: space-between; align-items: center; }
-#cart-items { list-style: none; padding: 0; margin: 15px 0; max-height: 180px; overflow-y: auto; }
-#cart-items li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+.in-stock { background: #d4edda; color: var(--success); }
+.out-of-stock { background: #f8d7da; color: var(--danger); }
 
-.clear-btn { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+.action-row { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.qty-input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; text-align: center; }
+.add-btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+.add-btn:disabled { background: #ccc; cursor: not-allowed; }
+.details-btn { background: none; border: 1px solid var(--primary); color: var(--primary); padding: 5px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+
+/* 5. Lightbox Modal */
+.modal { 
+    display: none; position: fixed; z-index: 2000; top: 0; left: 0; 
+    width: 100%; height: 100%; background: rgba(0,0,0,0.85); 
+    justify-content: center; align-items: center; 
+}
+.modal-content { 
+    background: white; padding: 30px; border-radius: 15px; 
+    max-width: 500px; width: 90%; text-align: center; position: relative; 
+}
+.close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #888; }
+
+/* 6. Floating Cart */
+#cart-container { 
+    position: fixed; bottom: 20px; right: 20px; width: 320px; 
+    background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+    padding: 20px; border-top: 6px solid var(--accent); z-index: 1000; 
+}
 .whatsapp-btn { background: #25D366; color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
 @media (max-width: 800px) { 
