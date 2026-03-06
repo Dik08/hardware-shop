@@ -9,18 +9,53 @@
 <body>
 
     <header>
-        <h1>My Hardware Shop</h1>
+        <div class="nav-container">
+            <h1>My Hardware Shop</h1>
+            <div class="dropdown">
+                <button class="dropbtn">Shop Info ▼</button>
+                <div class="dropdown-content">
+                    <p><strong>About:</strong> Quality tools and electricals serving Chandpara.</p>
+                    <hr>
+                    <p><strong>Location:</strong> Main Road, Chandpara, North 24 Parganas</p>
+                    <p><strong>Contact:</strong> 9547675034</p>
+                </div>
+            </div>
+        </div>
         <p>Quality Tools & Electricals in Chandpara</p>
         <div class="search-container">
-            <input type="text" id="search-bar" placeholder="Search brands (Asian Paints, Finolex...)" onkeyup="searchProducts()">
+            <input type="text" id="search-bar" placeholder="Search brands (Asian Paints, Finolex...)" onkeyup="filterProducts()">
         </div>
     </header>
 
-    <main id="product-list">
+    <div class="main-wrapper">
+        <aside class="sidebar">
+            <h3>Categories</h3>
+            <ul id="category-list">
+                <li onclick="setCategory('all')" class="cat-item active">All Items</li>
+                <li onclick="setCategory('tools')" class="cat-item">Tools</li>
+                <li onclick="setCategory('electrical')" class="cat-item">Electrical</li>
+                <li onclick="setCategory('paint')" class="cat-item">Paint</li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            <section id="featured-section">
+                <h2 class="section-title">⭐ Best Sellers</h2>
+                <div id="featured-list" class="featured-grid"></div>
+            </section>
+
+            <hr class="section-divider">
+
+            <h2 class="section-title">All Products</h2>
+            <div id="product-list" class="grid-container"></div>
         </main>
+    </div>
 
     <div id="cart-container">
-        <h3>Your Order List</h3>
+        <div class="cart-header">
+            <h3>Your Order List</h3>
+            <button class="clear-btn" onclick="clearCart()">Clear All</button>
+        </div>
         <ul id="cart-items">
             <p style="color: #888; font-size: 0.9rem;">Your cart is empty.</p>
         </ul>
