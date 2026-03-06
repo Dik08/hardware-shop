@@ -5,7 +5,9 @@
         "price": 350,
         "img": "hammer.jpg",
         "category": "tools",
-        "featured": true
+        "featured": true,
+        "stock": 15,
+        "description": "High-carbon steel head for durability."
     },
     {
         "id": 2,
@@ -13,7 +15,9 @@
         "price": 120,
         "img": "bulb.jpg",
         "category": "electrical",
-        "featured": false
+        "featured": false,
+        "stock": 0,
+        "description": "Energy-efficient with 2 years warranty."
     },
     {
         "id": 3,
@@ -21,7 +25,9 @@
         "price": 85,
         "img": "roller.jpg",
         "category": "paint",
-        "featured": true
+        "featured": true,
+        "stock": 1,
+        "description": "Energy-efficient with 2 years warranty."
     },
     {
         "id": 4,
@@ -29,6 +35,8 @@
         "price": 1450,
         "img": "wire.jpg",
         "category": "electrical",
-        "featured": true
+        "featured": true,
+        "stock": 2,
+        "description": "Energy-efficient with 2 years warranty."
     }
 ]
