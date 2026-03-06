@@ -1,0 +1,195 @@
+/* 1. Global Variables & Reset */
+:root {
+    --primary: #2c3e50;    /* Professional Dark Blue/Grey */
+    --accent: #e67e22;     /* Hardware Orange */
+    --bg: #f8f9fa;         /* Light Grey Background */
+    --white: #ffffff;
+    --text: #333333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* 2. Header & Search Bar */
+header {
+    background: var(--primary);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 10px 0 20px;
+    opacity: 0.9;
+}
+
+.search-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* 3. Product Grid Layout */
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 4. Product Card Styling */
+.product-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    border-color: var(--accent);
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain; /* Keeps hardware tools from looking stretched */
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.product-card h4 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.product-card p {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 10px 0;
+}
+
+.add-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.add-btn:hover {
+    background: var(--accent);
+}
+
+/* 5. Floating Cart (Optimized for Mobile) */
+#cart-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px-40px rgba(0,0,0,0.2);
+    padding: 20px;
+    border-top: 6px solid var(--accent);
+    z-index: 1000;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#cart-items li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+    margin: 15px 0;
+    color: var(--primary);
+}
+
+.whatsapp-btn {
+    background: #25D366; /* Official WhatsApp Green */
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.02);
+    background: #20ba5a;
+}
+
+/* 6. Responsive Fixes */
+@media (max-width: 600px) {
+    #cart-container {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+}
