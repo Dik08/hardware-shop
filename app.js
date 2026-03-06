@@ -1,48 +1,104 @@
-// 1. Your Product Data (Update this as you grow)
+// 1. DATABASE: Update these to match your uploaded filenames exactly
 const products = [
-    { id: 1, name: "Heavy Duty Hammer", price: 350, img: "hammer.jpg" },
-    { id: 2, name: "Philips LED Bulb 9W", price: 120, img: "bulb.jpg" },
-    { id: 3, name: "Paint Brush 4-inch", price: 85, img: "brush.jpg" }
+    { 
+        id: 1, 
+        name: "Tata Agrico Hammer", 
+        price: 350, 
+        img: "hammer.jpg", 
+        category: "tools" 
+    },
+    { 
+        id: 2, 
+        name: "Philips LED Bulb 9W", 
+        price: 120, 
+        img: "bulb.jpg", 
+        category: "electrical" 
+    },
+    { 
+        id: 3, 
+        name: "Asian Paints TruCare Roller", 
+        price: 85, 
+        img: "roller.jpg", 
+        category: "paint" 
+    },
+    { 
+        id: 4, 
+        name: "Finolex 1.5sqmm Wire", 
+        price: 1450, 
+        img: "wire.jpg", 
+        category: "electrical" 
+    }
 ];
 
 let cart = [];
 
-// 2. Render Products to Screen
-const productList = document.getElementById('product-list');
-products.forEach(product => {
-    productList.innerHTML += `
-        <div class="product-card">
-            <h4>${product.name}</h4>
-            <p>₹${product.price}</p>
-            <button onclick="addToCart(${product.id})">Add to Cart</button>
-        </div>
-    `;
-});
+// 2. RENDER FUNCTION: This creates the HTML for each product card
+function renderProducts(productsToDisplay) {
+    const container = document.getElementById('product-list');
+    if (!container) return;
+    
+    container.innerHTML = "";
 
-// 3. Add Item to Cart
-function addToCart(id) {
-    const item = products.find(p => p.id === id);
-    cart.push(item);
-    renderCart();
+    productsToDisplay.forEach(item => {
+        container.innerHTML += `
+            <div class="product-card">
+                <img src="${item.img}" alt="${item.name}">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+                <button class="add-btn" onclick="addToCart(${item.id})">Add to Order</button>
+            </div>
+        `;
+    });
 }
 
-// 4. Send to WhatsApp
-function sendToWhatsApp() {
-    const phone = "91XXXXXXXXXX"; // Your WhatsApp Number with Country Code
-    let message = "New Order from Website:%0A";
+// 3. SEARCH FUNCTION: Real-time filtering
+function searchProducts() {
+    const term = document.getElementById('search-bar').value.toLowerCase();
+    const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(term) || 
+        p.category.toLowerCase().includes(term)
+    );
+    renderProducts(filtered);
+}
+
+// 4. CART LOGIC
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const cartList = document.getElementById('cart-items');
+    const totalDisplay = document.getElementById('cart-total');
     
-    cart.forEach((item, index) => {
-        message += `${index + 1}. ${item.name} - ₹${item.price}%0A`;
+    if (cart.length === 0) {
+        cartList.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Your cart is empty.</p>';
+    } else {
+        cartList.innerHTML = cart.map(item => `<li><span>${item.name}</span> <span>₹${item.price}</span></li>`).join('');
+    }
+    
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalDisplay.innerText = `Total: ₹${total}`;
+}
+
+// 5. WHATSAPP CHECKOUT: Opens WhatsApp with the order details
+function sendToWhatsApp() {
+    if (cart.length === 0) return alert("Please add items to your cart first!");
+
+    // Replace with your real number (91 for India + 10 digit number)
+    const myNumber = "91XXXXXXXXXX"; 
+    let message = "*New Hardware Order*%0A------------------%0A";
+    
+    cart.forEach((item, i) => {
+        message += `${i+1}. ${item.name} - ₹${item.price}%0A`;
     });
 
     const total = cart.reduce((sum, item) => sum + item.price, 0);
-    message += `%0A*Total: ₹${total}*`;
+    message += `------------------%0A*Grand Total: ₹${total}*%0A%0AIs this available at the Chandpara shop?`;
 
-    const whatsappURL = `https://wa.me/${phone}?text=${message}`;
-    window.open(whatsappURL, '_blank');
+    window.open(`https://wa.me/${myNumber}?text=${message}`, '_blank');
 }
 
-function renderCart() {
-    const cartList = document.getElementById('cart-items');
-    cartList.innerHTML = cart.map(item => `<li>${item.name} - ₹${item.price}</li>`).join('');
-}
+// Initial Load
+renderProducts(products);
