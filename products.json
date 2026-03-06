@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "Tata Agrico Hammer",
+        "price": 350,
+        "img": "hammer.jpg",
+        "category": "tools",
+        "featured": true
+    },
+    {
+        "id": 2,
+        "name": "Philips LED Bulb 9W",
+        "price": 120,
+        "img": "bulb.jpg",
+        "category": "electrical",
+        "featured": false
+    },
+    {
+        "id": 3,
+        "name": "Asian Paints Roller",
+        "price": 85,
+        "img": "roller.jpg",
+        "category": "paint",
+        "featured": true
+    },
+    {
+        "id": 4,
+        "name": "Finolex 1.5sqmm Wire",
+        "price": 1450,
+        "img": "wire.jpg",
+        "category": "electrical",
+        "featured": true
+    }
+]
