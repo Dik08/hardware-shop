@@ -13,17 +13,17 @@ async function loadProducts() {
     }
 }
 
-// 2. Search Analytics: Store locally to see what customers want
+// 2. Analytics: Track what users are looking for in Chandpara
 function trackSearch(term) {
     if (term.length < 3) return;
-    let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+    let history = JSON.parse(localStorage.getItem('shop_analytics') || '[]');
     if (!history.includes(term)) {
         history.push(term);
-        localStorage.setItem('searchHistory', JSON.stringify(history.slice(-10)));
+        localStorage.setItem('shop_analytics', JSON.stringify(history.slice(-10)));
     }
 }
 
-// 3. Render Product Grid
+// 3. Render Product Cards
 function renderProducts(productsToDisplay, targetId) {
     const container = document.getElementById(targetId);
     if (!container) return;
@@ -41,66 +41,38 @@ function renderProducts(productsToDisplay, targetId) {
                 <h4>${item.name}</h4>
                 <p>₹${item.price}</p>
                 <div class="action-row">
-                    <button class="details-btn" onclick="openLightbox(${item.id})">View Details</button>
-                    <input type="number" id="qty-${targetId}-${item.id}" value="1" min="1" class="qty-input" ${isOutOfStock ? 'disabled' : ''}>
-                    <button class="add-btn" ${isOutOfStock ? 'disabled' : ''} 
-                        onclick="addToCart(${item.id}, 'qty-${targetId}-${item.id}')">
-                        ${isOutOfStock ? 'Out of Stock' : 'Add to Order'}
-                    </button>
+                    <button class="details-btn" onclick="openLightbox(${item.id})" style="margin-bottom:5px; width:100%; background:none; border:1px solid #ccc; border-radius:4px; cursor:pointer;">Quick View</button>
+                    <div style="display:flex; gap:5px;">
+                        <input type="number" id="qty-${targetId}-${item.id}" value="1" min="1" style="width:50px;" ${isOutOfStock ? 'disabled' : ''}>
+                        <button class="add-btn" style="flex-grow:1; background:var(--primary); color:white; border:none; padding:5px; border-radius:4px; cursor:pointer;" ${isOutOfStock ? 'disabled' : ''} 
+                            onclick="addToCart(${item.id}, 'qty-${targetId}-${item.id}')">
+                            ${isOutOfStock ? '🚫' : 'Add'}
+                        </button>
+                    </div>
                 </div>
             </div>`;
     });
 }
 
-// 4. Lightbox / Product Details Modal
+// 4. Modal / Details View
 function openLightbox(id) {
     const item = products.find(p => p.id === id);
     const modal = document.getElementById('productModal');
-    
-    // Create Modal Content Dynamically
     modal.innerHTML = `
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <span onclick="closeModal()" style="position:absolute; right:20px; cursor:pointer; font-size:1.5rem;">&times;</span>
             <img src="images/${item.img}" style="width:100%; max-height:250px; object-fit:contain; margin-bottom:15px;">
-            <h2 style="color:var(--primary);">${item.name}</h2>
-            <p style="font-size:1.2rem; color:var(--accent); font-weight:bold;">₹${item.price}</p>
-            <p style="color:#666; line-height:1.5;">${item.description || 'Premium hardware quality available at our Chandpara store.'}</p>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-            <p style="font-size:0.8rem; color:#999;">Category: ${item.category.toUpperCase()}</p>
+            <h2>${item.name}</h2>
+            <p style="color:var(--accent); font-weight:bold; font-size:1.3rem;">₹${item.price}</p>
+            <p style="color:#666; margin:15px 0;">${item.description || 'Quality hardware from our Chandpara store.'}</p>
             <button class="whatsapp-btn" style="background:var(--primary);" onclick="closeModal()">Back to Shop</button>
-        </div>
-    `;
+        </div>`;
     modal.style.display = 'flex';
 }
 
-function closeModal() {
-    document.getElementById('productModal').style.display = 'none';
-}
+function closeModal() { document.getElementById('productModal').style.display = 'none'; }
 
-// 5. Filtering Logic
-function filterProducts() {
-    const term = document.getElementById('search-bar').value.toLowerCase();
-    trackSearch(term);
-
-    const filtered = products.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(term);
-        const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
-        return matchesSearch && matchesCategory;
-    });
-
-    renderProducts(filtered, 'product-list');
-
-    const featuredSection = document.getElementById('featured-section');
-    if (currentCategory === 'all' && term === "") {
-        featuredSection.style.display = 'block';
-        const featured = products.filter(p => p.featured);
-        renderProducts(featured, 'featured-list');
-    } else {
-        featuredSection.style.display = 'none';
-    }
-}
-
-// 6. Cart Management
+// 5. Practical Cart Logic: Grouping quantities
 function addToCart(id, qtyInputId) {
     const product = products.find(p => p.id === id);
     const quantity = parseInt(document.getElementById(qtyInputId).value);
@@ -117,39 +89,44 @@ function addToCart(id, qtyInputId) {
 function updateCartUI() {
     const cartList = document.getElementById('cart-items');
     const totalDisplay = document.getElementById('cart-total');
+    
     if (cart.length === 0) {
-        cartList.innerHTML = '<p style="color:#888;">Cart is empty.</p>';
+        cartList.innerHTML = '<p style="color:#888; text-align:center;">Empty</p>';
     } else {
-        cartList.innerHTML = cart.map(item => `
-            <li><span>${item.name} (x${item.quantity})</span><span>₹${item.price * item.quantity}</span></li>
-        `).join('');
+        let html = `<div class="cart-row cart-header-row"><span>Item</span><span>Qty</span><span>Total</span></div>`;
+        html += cart.map(item => `
+            <div class="cart-row">
+                <span>${item.name}</span>
+                <span>x${item.quantity}</span>
+                <span>₹${item.price * item.quantity}</span>
+            </div>`).join('');
+        cartList.innerHTML = html;
     }
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    totalDisplay.innerText = `Total: ₹${total}`;
+    totalDisplay.innerHTML = `<strong>Grand Total: ₹${total}</strong>`;
 }
 
-function clearCart() { cart = []; updateCartUI(); }
+// 6. Navigation & Messaging (Verified for 9547675034)
+function filterProducts() {
+    const term = document.getElementById('search-bar').value.toLowerCase();
+    if (term) trackSearch(term);
+    const filtered = products.filter(p => p.name.toLowerCase().includes(term) && (currentCategory === 'all' || p.category === currentCategory));
+    renderProducts(filtered, 'product-list');
+}
+
+function sendToWhatsApp() {
+    if (cart.length === 0) return alert("Empty Cart!");
+    let message = "*New Order - Chandpara Shop*%0A------------------%0A";
+    cart.forEach((item, i) => { message += `${i+1}. ${item.name} x ${item.quantity} = ₹${item.price * item.quantity}%0A`; });
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    message += `------------------%0A*Total: ₹${total}*`;
+    window.open(`https://wa.me/919547675034?text=${message}`, '_blank');
+}
 
 function setCategory(cat) {
     currentCategory = cat;
-    document.querySelectorAll('.cat-item').forEach(el => {
-        el.classList.remove('active');
-        if(el.innerText.toLowerCase().includes(cat) || (cat === 'all' && el.innerText.includes('All'))) el.classList.add('active');
-    });
+    document.querySelectorAll('.cat-item').forEach(el => el.classList.toggle('active', el.innerText.toLowerCase().includes(cat) || (cat==='all' && el.innerText.includes('All'))));
     filterProducts();
-}
-
-// 7. WhatsApp Order (Verified for 9547675034)
-function sendToWhatsApp() {
-    if (cart.length === 0) return alert("Please add items first!");
-    const myNumber = "919547675034";
-    let message = "*New Hardware Order - Chandpara*%0A------------------%0A";
-    cart.forEach((item, i) => {
-        message += `${i+1}. ${item.name} x ${item.quantity} = ₹${item.price * item.quantity}%0A`;
-    });
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    message += `------------------%0A*Total Order Value: ₹${total}*%0A%0APlease confirm availability.`;
-    window.open(`https://wa.me/${myNumber}?text=${message}`, '_blank');
 }
 
 loadProducts();
