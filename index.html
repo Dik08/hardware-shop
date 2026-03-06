@@ -3,16 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hardware Shop - Chandpara</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>Hardware Store | Chandpara</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <h1>Our Hardware Catalog</h1>
-    <div id="product-list"></div>
 
-    <div id="cart">
-        <h3>Your Cart</h3>
-        <ul id="cart-items"></ul>
-        <button onclick="sendToWhatsApp()">Order via WhatsApp</button>
+    <header>
+        <h1>My Hardware Shop</h1>
+        <p>Quality Tools & Electricals in Chandpara</p>
+        <div class="search-container">
+            <input type="text" id="search-bar" placeholder="Search brands (Asian Paints, Finolex...)" onkeyup="searchProducts()">
+        </div>
+    </header>
+
+    <main id="product-list">
+        </main>
+
+    <div id="cart-container">
+        <h3>Your Order List</h3>
+        <ul id="cart-items">
+            <p style="color: #888; font-size: 0.9rem;">Your cart is empty.</p>
+        </ul>
+        <div class="cart-total" id="cart-total">Total: ₹0</div>
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+            Order via WhatsApp
+        </button>
     </div>
 
     <script src="app.js"></script>
