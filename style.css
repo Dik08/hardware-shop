@@ -1,52 +1,40 @@
 :root { --blue: #2e41b6; --white: #fff; --text: #333; --shadow: 0 4px 15px rgba(0,0,0,0.1); }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--white); overflow-x: hidden; }
 
-/* Sticky Header */
+/* Banner Styling */
+.banner-container { width: 100%; padding: 0 15px; box-sizing: border-box; margin-top: 10px; }
+.main-banner { width: 100%; border-radius: 12px; box-shadow: var(--shadow); object-fit: cover; max-height: 200px; }
+
+/* Sticky Header & Search */
 .main-header { position: sticky; top: 0; background: white; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.nav-top { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
-.brand-name { font-weight: 900; color: var(--blue); letter-spacing: 1.5px; font-size: 1.1rem; }
-
-/* Prominent Search Bar */
-.search-area-prominent { padding: 10px 20px; background: #fff; }
+.nav-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+.brand-name { font-weight: 900; color: var(--blue); letter-spacing: 1px; font-size: 1.1rem; }
+.search-area-prominent { padding: 10px 20px; }
 .search-wrap-pro { display: flex; border: 2px solid var(--blue); border-radius: 8px; overflow: hidden; }
-.search-wrap-pro input { flex: 1; border: none; padding: 12px; outline: none; font-size: 1rem; }
-.search-go-pro { background: var(--blue); color: white; border: none; padding: 0 20px; font-size: 1.1rem; cursor: pointer; }
+.search-wrap-pro input { flex: 1; border: none; padding: 12px; outline: none; }
+.search-go-pro { background: var(--blue); color: white; border: none; padding: 0 15px; }
 
-.location-strip { background: #f9f9f9; text-align: center; font-size: 0.75rem; padding: 8px; color: #777; border-top: 1px solid #eee; }
-
-/* Fixed Panels (Overlays) - THE KEY FIX */
-.flyout-panel { position: fixed; top: 0; height: 100%; width: 300px; background: white; z-index: 2000; transition: 0.4s ease; box-shadow: 0 0 30px rgba(0,0,0,0.25); display: block !important; }
+/* Professional Sidebar */
+.flyout-panel { position: fixed; top: 0; height: 100%; width: 300px; background: white; z-index: 2000; transition: 0.4s ease; box-shadow: 0 0 30px rgba(0,0,0,0.25); }
 .left { left: -320px; }
 .right { right: -320px; width: 320px; }
 .active-l { left: 0 !important; }
 .active-r { right: 0 !important; }
 
-.panel-head { background: var(--blue); color: white; padding: 25px 20px; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: space-between; }
-.panel-scrollable { padding: 15px; height: calc(100% - 320px); overflow-y: auto; }
-.panel-bottom { position: absolute; bottom: 0; width: 100%; background: #fdfdfd; padding: 20px; border-top: 2px solid var(--blue); box-sizing: border-box; }
+.panel-head { background: var(--blue); color: white; padding: 25px 20px; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+.panel-links { list-style: none; padding: 0; margin: 0; }
+.panel-links li { padding: 18px 25px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; cursor: pointer; color: #444; transition: 0.2s; }
+.panel-links li:hover { background: #f8f9ff; color: var(--blue); }
+.admin-divider { padding: 20px 25px 10px; font-size: 0.7rem; color: #999; font-weight: 800; letter-spacing: 1px; }
 
-/* Category Strip Styling */
-.category-strip { display: flex; overflow-x: auto; gap: 15px; padding: 15px; scrollbar-width: none; }
-.category-strip::-webkit-scrollbar { display: none; }
-.cat-item { min-width: 80px; text-align: center; cursor: pointer; }
-.cat-item img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; }
-.cat-item span { display: block; font-size: 0.75rem; font-weight: 600; margin-top: 5px; color: #555; }
-
-/* Product Cards */
-.product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
-.product-card { background: white; border: 1px solid #f0f0f0; border-radius: 12px; padding: 12px; text-align: center; box-shadow: var(--shadow); transition: 0.3s; }
-.product-card img { width: 100%; height: 120px; object-fit: contain; }
-
-/* Modals (Hidden by default) */
+/* Dashboard UI */
 .modal-root { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
-.dashboard-card { background: white; width: 95%; max-width: 1000px; height: 90vh; border-radius: 15px; overflow-y: auto; padding: 20px; }
-.auth-card { background: white; max-width: 380px; padding: 40px 30px; text-align: center; border-radius: 20px; }
-
-/* Table styling for mobile */
-.table-scroll { overflow-x: auto; margin-top: 20px; }
+.dashboard-card { background: white; width: 95%; max-width: 1050px; height: 90vh; border-radius: 15px; padding: 20px; overflow: hidden; display: flex; flex-direction: column; }
+.dash-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+.kpi { background: #f4f7ff; padding: 15px; border-radius: 8px; border-left: 5px solid var(--blue); text-align: center; }
+.table-scroll { overflow-x: auto; flex: 1; }
 .dash-table { width: 100%; min-width: 700px; border-collapse: collapse; }
-.dash-table th { background: #f4f4f4; padding: 12px; text-align: left; font-size: 0.8rem; }
+.dash-table th { background: #f4f4f4; padding: 12px; text-align: left; position: sticky; top: 0; }
 .dash-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
 
-.blue-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
-.customer-info-box input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+.blue-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
