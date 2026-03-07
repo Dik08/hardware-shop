@@ -13,79 +13,82 @@
 
     <header class="main-header">
         <div class="nav-top">
-            <div class="icon-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-            <div class="brand-logo">ASHIRBAD HARDWARE</div>
-            <div class="icon-btn" onclick="toggleCart()"><i class="fas fa-shopping-bag"></i></div>
+            <div class="header-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="brand-name">ASHIRBAD HARDWARE</div>
+            <div class="header-icon" onclick="toggleCart()"><i class="fas fa-shopping-bag"></i></div>
         </div>
-        <div class="search-container">
-            <div class="search-bar-wrap">
-                <input type="text" id="search-bar" placeholder="What are you looking for?" onkeyup="filterProducts()">
+        <div class="search-area">
+            <div class="search-wrap">
+                <input type="text" id="search-bar" placeholder="Search tools, paints..." onkeyup="filterProducts()">
                 <button class="search-go"><i class="fas fa-search"></i></button>
             </div>
         </div>
+        <div class="location-bar"><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, North 24 Parganas</div>
     </header>
 
-    <div id="sidebar" class="panel-overlay panel-left">
-        <div class="panel-header">MENU <span onclick="toggleSidebar()">&times;</span></div>
+    <div id="sidebar" class="flyout-panel left">
+        <div class="panel-head">MENU <span onclick="toggleSidebar()">&times;</span></div>
         <ul class="panel-links">
             <li onclick="setCategory('all')"><i class="fas fa-home"></i> Home</li>
             <li onclick="setCategory('tools')"><i class="fas fa-hammer"></i> Tools</li>
             <li onclick="setCategory('electrical')"><i class="fas fa-bolt"></i> Electrical</li>
-            <li onclick="openLoginModal()" class="admin-entry"><i class="fas fa-lock"></i> Owner Login</li>
+            <li onclick="openLoginModal()" class="owner-zone"><i class="fas fa-user-shield"></i> Owner Login</li>
         </ul>
     </div>
 
-    <div id="cart-panel" class="panel-overlay panel-right">
-        <div class="panel-header">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
-        <div id="cart-items-list" class="panel-body"></div>
-        <div class="panel-footer">
-            <div class="total-summary"><span>Grand Total:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="action-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
-            <button class="text-link" onclick="clearCart()">Clear All Items</button>
+    <div id="cart-panel" class="flyout-panel right">
+        <div class="panel-head">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
+        <div id="cart-items-list" class="panel-scrollable"></div>
+        <div class="panel-bottom">
+            <div class="grand-total"><span>Total:</span><span id="cart-total-amt">₹0</span></div>
+            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
+            <button class="clear-btn" onclick="clearCart()">Clear All Items</button>
         </div>
     </div>
 
-    <main class="main-content">
-        <section id="featured-section">
-            <h2 class="grid-title">⭐ Best Sellers</h2>
+    <main class="page-container">
+        <section id="featured-section" style="display:none;">
+            <h2 class="section-title">⭐ Best Sellers</h2>
             <div id="featured-list" class="product-grid"></div>
         </section>
 
-        <section id="all-products-section">
-            <h2 class="grid-title">All Products</h2>
+        <section id="all-products">
+            <h2 class="section-title">All Products</h2>
             <div id="product-list" class="product-grid"></div>
         </section>
     </main>
 
     <footer class="shop-footer">
-        <div class="footer-info">
-            <h4>Contact Details</h4>
-            <p><i class="fas fa-phone"></i> +91 9547675034</p>
-            <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Contact Details</h4>
+                <p><i class="fas fa-phone"></i> +91 9547675034</p>
+                <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
+            </div>
         </div>
-        <div class="footer-copy">© 2026 Ashirbad Hardware. Developed by Dik.</div>
+        <div class="footer-legal">© 2026 Ashirbad Hardware. Developed by Dik.</div>
     </footer>
 
     <div id="loginModal" class="modal-root">
         <div class="modal-box small">
-            <h3>Admin Access</h3>
+            <h3>Admin Login</h3>
             <input type="text" id="adminUser" placeholder="Username">
             <input type="password" id="adminPass" placeholder="Password">
-            <button class="action-btn" onclick="handleLogin()">Login</button>
-            <button class="text-link" onclick="closeModal()">Cancel</button>
+            <button class="blue-btn" onclick="handleLogin()">Login</button>
+            <button class="clear-btn" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <div id="adminDashboard" class="modal-root">
         <div class="modal-box large">
-            <div class="dash-head"><h2>Cloud Dashboard</h2><button onclick="closeDashboard()">Close</button></div>
-            <div class="dash-stats">
-                <div class="stat-card"><span>Orders</span><p id="totalSalesCount">0</p></div>
-                <div class="stat-card"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
+            <div class="dash-nav"><h2>Cloud Dashboard</h2><button onclick="closeDashboard()">Exit</button></div>
+            <div class="dash-kpi">
+                <div class="kpi"><span>Orders</span><p id="totalSalesCount">0</p></div>
+                <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
-            <div class="table-wrap">
+            <div class="table-scroll">
                 <table>
-                    <thead><tr><th>Date</th><th>Order</th><th>Value</th><th>Action</th></tr></thead>
+                    <thead><tr><th>Date</th><th>Description</th><th>Price</th><th>Action</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
