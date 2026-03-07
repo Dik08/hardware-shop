@@ -19,34 +19,30 @@
         </div>
         <div class="search-area">
             <div class="search-wrap">
-                <input type="text" id="search-bar" placeholder="What are you looking for?" onkeyup="filterProducts()">
+                <input type="text" id="search-bar" placeholder="Find products..." onkeyup="filterProducts()">
                 <button class="search-go"><i class="fas fa-search"></i></button>
             </div>
         </div>
-        <div class="location-bar"><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, North 24 Parganas</div>
     </header>
 
     <div id="sidebar" class="flyout-panel left">
         <div class="panel-head">MENU <span onclick="toggleSidebar()">&times;</span></div>
         <ul class="panel-links">
             <li onclick="setCategory('all')"><i class="fas fa-home"></i> Home</li>
-            <li onclick="setCategory('tools')"><i class="fas fa-hammer"></i> Tools</li>
-            <li onclick="setCategory('electrical')"><i class="fas fa-bolt"></i> Electrical</li>
             <li onclick="openLoginModal()" class="owner-zone"><i class="fas fa-user-shield"></i> Owner Login</li>
         </ul>
     </div>
 
     <div id="cart-panel" class="flyout-panel right">
         <div class="panel-head">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
-        <div class="customer-inputs">
-            <input type="text" id="cust-name" placeholder="Your Name *">
+        <div class="customer-info-box">
+            <input type="text" id="cust-name" placeholder="Full Name *">
             <input type="tel" id="cust-phone" placeholder="Phone Number *">
         </div>
         <div id="cart-items-list" class="panel-scrollable"></div>
         <div class="panel-bottom">
-            <div class="grand-total"><span>Total Amount:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm Order</button>
-            <button class="clear-btn" onclick="clearCart()">Clear All Items</button>
+            <div class="grand-total"><span>Total:</span><span id="cart-total-amt">₹0</span></div>
+            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm & Send</button>
         </div>
     </div>
 
@@ -55,47 +51,57 @@
             <h2 class="section-title">⭐ Best Sellers</h2>
             <div id="featured-list" class="product-grid"></div>
         </section>
-
         <section id="all-products">
-            <h2 class="section-title">Product Catalog</h2>
+            <h2 class="section-title">All Products</h2>
             <div id="product-list" class="product-grid"></div>
         </section>
     </main>
 
     <footer class="shop-footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Contact Store</h4>
-                <p><i class="fas fa-phone"></i> +91 9547675034</p>
-                <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
-            </div>
-        </div>
-        <div class="footer-legal">© 2026 Ashirbad Hardware. Developed by Dik.</div>
+        <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
+        <p>© 2026 Ashirbad Hardware | Developed by Dik</p>
     </footer>
-
-    <div id="loginModal" class="modal-root">
-        <div class="modal-box small">
-            <h3>Admin Authentication</h3>
-            <input type="text" id="adminUser" placeholder="Username">
-            <input type="password" id="adminPass" placeholder="Password">
-            <button class="blue-btn" onclick="handleLogin()">LOGIN</button>
-            <button class="clear-btn" onclick="closeModal()">Cancel</button>
-        </div>
-    </div>
 
     <div id="adminDashboard" class="modal-root">
         <div class="modal-box large">
-            <div class="dash-nav"><h2><i class="fas fa-chart-line"></i> Business Analytics</h2><button onclick="closeDashboard()">Logout</button></div>
+            <div class="dash-nav">
+                <h2>Business Analytics</h2>
+                <button onclick="closeDashboard()">Exit</button>
+            </div>
+            
+            <div class="dash-search-wrap">
+                <input type="text" id="dash-search" placeholder="Search by Name or Order ID..." onkeyup="searchOrders()">
+                <i class="fas fa-search"></i>
+            </div>
+
             <div class="dash-kpi">
                 <div class="kpi"><span>Total Orders</span><p id="totalSalesCount">0</p></div>
                 <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
+
             <div class="table-scroll">
                 <table class="dash-table">
-                    <thead><tr><th>Date</th><th>Customer</th><th>Summary</th><th>Total</th><th>Action</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>ID & Date</th>
+                            <th>Customer Details</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal-root">
+        <div class="modal-box small">
+            <h3>Admin Login</h3>
+            <input type="text" id="adminUser" placeholder="User">
+            <input type="password" id="adminPass" placeholder="Pass">
+            <button class="blue-btn" onclick="handleLogin()">Login</button>
         </div>
     </div>
 
