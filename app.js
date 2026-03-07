@@ -95,9 +95,6 @@ function filterProducts() {
     const term = document.getElementById('search-bar').value.toLowerCase();
     const filtered = products.filter(p => p.name.toLowerCase().includes(term) && (currentCategory === 'all' || p.category === currentCategory));
     renderProducts(filtered, 'product-list');
-    const feat = products.filter(p => (p.featured === true || p.featured === "TRUE") && currentCategory === 'all' && term === "");
-    document.getElementById('featured-section').style.display = feat.length > 0 ? 'block' : 'none';
-    renderProducts(feat, 'featured-list');
 }
 
 function closeModal() { document.querySelectorAll('.modal-root').forEach(m => m.style.display = 'none'); }
