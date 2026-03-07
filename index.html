@@ -6,13 +6,16 @@
     <title>Hardware Store | Chandpara</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
     <header class="sticky-header">
         <div class="top-nav">
             <div class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-            <div class="logo">MY HARDWARE SHOP</div>
+            <div class="logo">ASHIRBAD HARDWARE</div>
             <div class="cart-btn" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i></div>
         </div>
         <div class="search-section">
@@ -21,38 +24,23 @@
                 <button class="search-action-btn"><i class="fas fa-search"></i></button>
             </div>
         </div>
-        <div class="showroom-alert">
-            <i class="fas fa-store"></i> <span>Visit our showroom at Main Road, Chandpara</span>
-        </div>
     </header>
 
     <main class="main-content">
-        <div class="hero-banner">
-            <img src="images/hardware_banner.jpg" alt="Hardware Store Banner">
-            <div class="hero-overlay">
-                <h2>Hardware</h2>
-                <nav class="breadcrumb">Home > Hardware</nav>
-            </div>
-        </div>
-
         <section class="home-section">
             <h3 class="section-header">Shop by Category</h3>
             <div class="cat-visual-grid">
                 <div class="cat-item-card" onclick="setCategory('tools')">
-                    <img src="images/tools-cat.jpg" alt="Tools">
-                    <span>Tools</span>
+                    <img src="images/tools-cat.jpg" alt="Tools"><span>Tools</span>
                 </div>
                 <div class="cat-item-card" onclick="setCategory('electrical')">
-                    <img src="images/elec-cat.jpg" alt="Electrical">
-                    <span>Electrical</span>
+                    <img src="images/elec-cat.jpg" alt="Electrical"><span>Electrical</span>
                 </div>
                 <div class="cat-item-card" onclick="setCategory('paint')">
-                    <img src="images/paint-cat.jpg" alt="Paint">
-                    <span>Paints</span>
+                    <img src="images/paint-cat.jpg" alt="Paint"><span>Paints</span>
                 </div>
                 <div class="cat-item-card" onclick="setCategory('hardware')">
-                    <img src="images/hard-cat.jpg" alt="Hardware">
-                    <span>Hardware</span>
+                    <img src="images/hard-cat.jpg" alt="Hardware"><span>Hardware</span>
                 </div>
             </div>
         </section>
@@ -68,31 +56,43 @@
         </section>
     </main>
 
-    <footer>
-        <div class="footer-accordion">
-            <div class="footer-item">
-                <button class="footer-tab" onclick="toggleFPanel(this)">Contacts Details <i class="fas fa-chevron-down"></i></button>
-                <div class="footer-panel">
-                    <p><i class="fas fa-phone"></i> +91 9547675034</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
-                </div>
-            </div>
-        </div>
-        <div class="legal-footer">
-            <p>Copyright © 2026 My Hardware Shop. Designed by Dik.</p>
-        </div>
-    </footer>
-
     <div id="sidebar" class="side-panel-left">
-        <div class="side-header">MENU <span onclick="toggleSidebar()">&times;</span></div>
+        <div class="side-header">
+            <span><i class="fas fa-store"></i> NAVIGATION</span>
+            <span onclick="toggleSidebar()" class="close-x">&times;</span>
+        </div>
         <ul class="side-links">
-            <li onclick="setCategory('all')">All Products</li>
-            <li onclick="setCategory('tools')">Tools</li>
-            <li onclick="setCategory('electrical')">Electrical</li>
-            <hr>
-            <li onclick="openLoginModal()" style="color:var(--brand-blue); font-weight:bold;">Owner Login</li>
+            <li onclick="setCategory('all')"><i class="fas fa-th-large"></i> All Products</li>
+            <div class="admin-divider">OWNER ZONE</div>
+            <li onclick="openLoginModal()" class="admin-link"><i class="fas fa-user-shield"></i> Owner Dashboard</li>
         </ul>
     </div>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content auth-card">
+            <div class="auth-header"><h3>Secure Login</h3></div>
+            <div class="auth-body">
+                <input type="text" id="adminUser" placeholder="Username">
+                <input type="password" id="adminPass" placeholder="Password">
+                <button class="pro-add-btn" onclick="handleLogin()">AUTHENTICATE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminDashboard" class="modal-overlay">
+        <div class="modal-content dashboard-pro">
+            <div class="dash-nav"><h2><i class="fas fa-cloud"></i> Cloud Dashboard</h2><button onclick="closeDashboard()">Logout</button></div>
+            <div class="stats-row">
+                <div class="kpi-card"><span>ORDERS</span><span id="totalSalesCount">0</span></div>
+                <div class="kpi-card highlight"><span>REVENUE</span><span id="totalRevenue">₹0</span></div>
+            </div>
+            <div class="table-container">
+                <table><thead><tr><th>DATE</th><th>ITEMS</th><th>VALUE</th></tr></thead><tbody id="salesBody"></tbody></table>
+            </div>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal-overlay"></div>
 
     <div id="cart-panel" class="side-panel-right">
         <div class="cart-header">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
@@ -100,39 +100,10 @@
         <div class="cart-summary">
             <div class="total-row">Total: <span id="cart-total-amt">₹0</span></div>
             <button class="checkout-btn-wa" onclick="sendToWhatsApp()">ORDER VIA WHATSAPP</button>
-            <button class="clear-all-link" onclick="clearCart()">Clear All Items</button>
+            <button class="clear-all-link" onclick="clearCart()">Clear All</button>
         </div>
     </div>
 
-    <div id="loginModal" class="modal-overlay">
-        <div class="modal-content admin-login">
-            <h3>Owner Login</h3>
-            <input type="text" id="adminUser" placeholder="Username">
-            <input type="password" id="adminPass" placeholder="Password">
-            <button class="pro-add-btn" onclick="handleLogin()">Login</button>
-            <button onclick="closeLoginModal()" style="margin-top:10px; border:none; background:none; cursor:pointer;">Cancel</button>
-        </div>
-    </div>
-
-    <div id="adminDashboard" class="modal-overlay">
-        <div class="modal-content dashboard-large">
-            <span class="close-x" onclick="closeDashboard()">&times;</span>
-            <h2>Owner Dashboard</h2>
-            <div class="stats-grid">
-                <div class="stat-card"><h3>Orders</h3><p id="totalSalesCount">0</p></div>
-                <div class="stat-card"><h3>Revenue</h3><p id="totalRevenue">₹0</p></div>
-            </div>
-            <h3>Sales Record</h3>
-            <div class="table-scroll">
-                <table id="salesTable">
-                    <thead><tr><th>Date</th><th>Items</th><th>Total</th></tr></thead>
-                    <tbody id="salesBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div id="productModal" class="modal-overlay"></div>
     <script src="app.js"></script>
 </body>
 </html>
