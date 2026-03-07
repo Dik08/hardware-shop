@@ -1,40 +1,42 @@
 :root { --blue: #2e41b6; --white: #fff; --text: #333; --shadow: 0 4px 15px rgba(0,0,0,0.1); }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--white); overflow-x: hidden; }
 
-.main-header { position: sticky; top: 0; background: white; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.nav-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-.brand-name { font-weight: 900; color: var(--blue); letter-spacing: 1.5px; }
+/* Prominent Search Bar */
+.search-area-prominent { padding: 15px 20px; background: #fff; }
+.search-wrap-pro { display: flex; border: 2px solid var(--blue); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(46,65,182,0.1); }
+.search-wrap-pro input { flex: 1; border: none; padding: 14px; outline: none; font-size: 1rem; }
+.search-go-pro { background: var(--blue); color: white; border: none; padding: 0 20px; font-size: 1.1rem; }
 
-/* Overlays - FIXED POSITIONS */
-.flyout-panel { position: fixed; top: 0; height: 100%; width: 300px; background: white; z-index: 2000; transition: 0.4s ease; box-shadow: 0 0 25px rgba(0,0,0,0.2); }
+/* Sidebar & Order Panel Mobile Fixes */
+.flyout-panel { position: fixed; top: 0; height: 100%; width: 300px; background: white; z-index: 2000; transition: 0.4s ease; box-shadow: 0 0 30px rgba(0,0,0,0.25); }
 .left { left: -320px; }
 .right { right: -320px; width: 320px; }
 .active-l { left: 0 !important; }
 .active-r { right: 0 !important; }
+.panel-head { background: var(--blue); color: white; padding: 25px 20px; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
 
-.customer-inputs { padding: 15px; background: #f8f9ff; border-bottom: 1px solid #eee; }
-.customer-inputs input { width: 100%; padding: 12px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-
-.panel-head { background: var(--blue); color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; }
-.panel-scrollable { padding: 15px; height: calc(100% - 300px); overflow-y: auto; }
-.panel-bottom { position: absolute; bottom: 0; width: 100%; background: #fdfdfd; padding: 20px; border-top: 2px solid var(--blue); box-sizing: border-box; }
+/* Category Strip */
+.category-strip { display: flex; overflow-x: auto; gap: 15px; padding: 15px; scrollbar-width: none; }
+.cat-item { min-width: 80px; text-align: center; cursor: pointer; }
+.cat-item img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; margin-bottom: 5px; }
+.cat-item span { font-size: 0.75rem; font-weight: 600; color: #555; }
 
 /* Product Grid */
 .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
-.product-card { background: white; border-radius: 10px; padding: 15px; text-align: center; box-shadow: var(--shadow); transition: 0.3s; border: 1px solid #f0f0f0; }
+.product-card { background: white; border: 1px solid #f0f0f0; border-radius: 12px; padding: 12px; text-align: center; box-shadow: var(--shadow); }
 .product-card img { width: 100%; height: 120px; object-fit: contain; }
 
-/* Dashboard UI Improvements */
-.dash-search-container { padding: 15px; }
-.dash-search-container input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
-.modal-root { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
-.modal-box.large { width: 95%; max-width: 1000px; height: 90vh; overflow-y: auto; background: white; border-radius: 12px; }
+/* Enhanced Login */
+.auth-card { max-width: 380px; padding: 40px 30px; text-align: center; border-radius: 20px; }
+.auth-icon { font-size: 3rem; color: var(--blue); margin-bottom: 15px; }
+.auth-card input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+.cancel-span { display: block; margin-top: 15px; color: #888; cursor: pointer; font-size: 0.9rem; }
 
-/* Responsive Analytics Fix */
-.table-scroll { width: 100%; overflow-x: auto; }
-.dash-table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.85rem; }
-.dash-table th, .dash-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-.dash-table th { background: #eee; font-weight: bold; }
+/* Dashboard Improvements */
+.dashboard-card { max-width: 1050px; width: 95%; height: 90vh; border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; }
+.dash-nav { padding: 20px; border-bottom: 1px solid #eee; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.dash-search-group input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 250px; }
 
-.blue-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-.shop-footer { padding: 30px 15px; background: #fafafa; border-top: 1px solid #eee; }
+/* Buttons */
+.blue-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+.clear-btn-text { width: 100%; background: none; border: none; color: #888; padding: 10px; margin-top: 10px; cursor: pointer; text-decoration: underline; }
