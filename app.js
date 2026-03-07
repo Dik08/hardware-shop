@@ -26,7 +26,7 @@ async function loadProducts() {
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
 function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
 
-// CART LOGIC - WITH INDIVIDUAL DELETE
+// CART LOGIC
 function addToCart(id) {
     const item = products.find(p => p.id === id);
     const existing = cart.find(c => c.id === id);
@@ -39,22 +39,18 @@ function removeFromCart(id) {
     updateCartUI();
 }
 
-function clearCart() {
-    if (confirm("Clear your entire cart?")) { cart = []; updateCartUI(); }
-}
-
 function updateCartUI() {
     const list = document.getElementById('cart-items-list');
     if (cart.length === 0) {
-        list.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">Cart is empty</p>`;
+        list.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">Order list empty</p>`;
     } else {
         list.innerHTML = cart.map(i => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #eee;">
                 <div>
                     <div style="font-weight:600; font-size:0.85rem;">${i.name}</div>
-                    <div style="font-size:0.75rem; color:#666;">Qty: ${i.quantity} × ₹${i.price}</div>
+                    <div style="font-size:0.75rem; color:#666;">Qty: ${i.quantity}</div>
                 </div>
-                <div style="display:flex; align-items:center; gap:10px;">
+                <div style="display:flex; align-items:center; gap:15px;">
                     <span style="font-weight:bold; color:var(--blue);">₹${i.price * i.quantity}</span>
                     <i class="fas fa-trash-alt" onclick="removeFromCart(${i.id})" style="color:#ff4d4d; cursor:pointer;"></i>
                 </div>
@@ -64,12 +60,6 @@ function updateCartUI() {
 }
 
 // SEARCH & DASHBOARD
-function searchOrders() {
-    const term = document.getElementById('dash-search').value.toLowerCase();
-    const filtered = allOrders.filter(o => o.customer.toLowerCase().includes(term) || (o.id && o.id.toLowerCase().includes(term)));
-    displayOrders(filtered);
-}
-
 function syncDashboard() {
     database.ref('orders').on('value', (snap) => {
         const data = snap.val();
@@ -84,7 +74,7 @@ function displayOrders(list) {
     document.getElementById('totalRevenue').innerText = `₹${list.reduce((s, i) => s + i.total, 0).toLocaleString()}`;
     document.getElementById('salesBody').innerHTML = list.map(s => `
         <tr>
-            <td><span style="color:#888;">#${s.id || 'N/A'}</span><br>${s.date}</td>
+            <td><span style="color:#888;">#${s.id}</span><br>${s.date}</td>
             <td><b>${s.customer}</b><br><span style="color:var(--blue); font-size:0.8rem;">${s.phone}</span></td>
             <td style="font-size:0.7rem;">${s.items}</td>
             <td><b>₹${s.total}</b></td>
@@ -92,24 +82,24 @@ function displayOrders(list) {
         </tr>`).reverse().join('');
 }
 
-function deleteOrder(id) { if(confirm("Permanently delete this order record?")) database.ref('orders/' + id).remove(); }
+function deleteOrder(id) { if(confirm("Delete record?")) database.ref('orders/' + id).remove(); }
 
-// LOGIN & AUTH
+// AUTH
 function openLoginModal() { closeModal(); document.getElementById('loginModal').style.display = 'flex'; }
 function handleLogin() {
     if (document.getElementById('adminUser').value === ADMIN_CRED.user && document.getElementById('adminPass').value === ADMIN_CRED.pass) {
         closeModal(); document.getElementById('adminDashboard').style.display = 'flex'; syncDashboard();
-    } else alert("Access Denied");
+    } else alert("Denied");
 }
 
 function sendToWhatsApp() {
     const name = document.getElementById('cust-name').value;
     const phone = document.getElementById('cust-phone').value;
-    if (!name || !phone) return alert("Please enter Customer Name & Phone!");
+    if (!name || !phone) return alert("Enter Customer Info!");
     const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
     const orderId = "ASH" + Date.now().toString().slice(-4);
     database.ref('orders').push({ id: orderId, date: new Date().toLocaleString(), customer: name, phone: phone, items: cart.map(i => i.name).join(', '), total: total });
-    let msg = `*ASHIRBAD HARDWARE*%0AOrder ID: ${orderId}%0ACustomer: ${name}%0APh: ${phone}%0A---%0A`;
+    let msg = `*ASHIRBAD HARDWARE*%0AID: ${orderId}%0ACustomer: ${name}%0APh: ${phone}%0A---%0A`;
     cart.forEach(i => msg += `• ${i.name} (x${i.quantity})%0A`);
     msg += `---%0A*TOTAL: ₹${total}*`;
     window.open(`https://wa.me/919547675034?text=${msg}`);
