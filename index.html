@@ -24,17 +24,18 @@
                 <button class="search-go-pro"><i class="fas fa-search"></i></button>
             </div>
         </div>
+        <div class="location-strip"><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, North 24 Parganas</div>
     </header>
 
     <section class="banner-container">
-        <img src="images/shop-banner.jpg" alt="Ashirbad Hardware Banner" class="main-banner">
+        <img src="images/shop-banner.jpg" alt="Ashirbad Hardware" class="main-banner">
     </section>
 
     <div id="sidebar" class="flyout-panel left">
         <div class="panel-head">MENU <span onclick="toggleSidebar()">&times;</span></div>
         <ul class="panel-links">
             <li onclick="setCategory('all')"><i class="fas fa-home"></i> Home</li>
-            <li onclick="openLocation()"><i class="fas fa-map-marker-alt"></i> Visit Our Shop</li>
+            <li onclick="openLocation()"><i class="fas fa-map-marked-alt"></i> Visit Our Shop</li>
             <li onclick="setCategory('tools')"><i class="fas fa-hammer"></i> Tools</li>
             <li onclick="setCategory('electrical')"><i class="fas fa-bolt"></i> Electrical</li>
             <div class="admin-divider">OWNER ZONE</div>
@@ -45,13 +46,13 @@
     <div id="cart-panel" class="flyout-panel right">
         <div class="panel-head">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
         <div class="customer-info-box">
-            <input type="text" id="cust-name" placeholder="Customer Name *">
+            <input type="text" id="cust-name" placeholder="Your Name *">
             <input type="tel" id="cust-phone" placeholder="Phone Number *">
         </div>
         <div id="cart-items-list" class="panel-scrollable"></div>
         <div class="panel-bottom">
             <div class="grand-total"><span>Total Amount:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm & Send</button>
+            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
             <button class="clear-btn-text" onclick="clearCart()">Clear All Items</button>
         </div>
     </div>
@@ -66,10 +67,12 @@
                 <div class="cat-item" onclick="setCategory('hardware')"><img src="images/hard-cat.jpg"><span>Hardware</span></div>
             </div>
         </section>
+
         <section id="featured-section" style="display:none;">
             <h2 class="section-title">⭐ Best Sellers</h2>
             <div id="featured-list" class="product-grid"></div>
         </section>
+
         <section id="all-products">
             <h2 class="section-title">Product Catalog</h2>
             <div id="product-list" class="product-grid"></div>
@@ -77,7 +80,7 @@
     </main>
 
     <footer class="shop-footer">
-        <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
+        <p><i class="fas fa-phone"></i> +91 9547675034</p>
         <p>© 2026 Ashirbad Hardware | Developed by Dik</p>
     </footer>
 
@@ -85,9 +88,9 @@
         <div class="modal-box auth-card">
             <div class="auth-icon"><i class="fas fa-user-lock"></i></div>
             <h3>Owner Secure Access</h3>
-            <input type="email" id="adminEmail" placeholder="Owner Email">
-            <input type="password" id="adminPass" placeholder="Private Password">
-            <button class="blue-btn" onclick="handleAuthLogin()">LOGIN TO CLOUD</button>
+            <input type="email" id="adminEmail" placeholder="Email Address">
+            <input type="password" id="adminPass" placeholder="Password">
+            <button class="blue-btn" onclick="handleAuthLogin()">LOGIN TO DASHBOARD</button>
             <span class="cancel-span" onclick="closeModal()">Cancel</span>
         </div>
     </div>
@@ -95,19 +98,19 @@
     <div id="adminDashboard" class="modal-root">
         <div class="modal-box dashboard-card">
             <div class="dash-nav">
-                <h2>Business Analytics</h2>
+                <h2>Cloud Analytics</h2>
                 <div class="dash-search-group">
-                    <input type="text" id="dash-search" placeholder="Search Name or Order ID..." onkeyup="searchOrders()">
+                    <input type="text" id="dash-search" placeholder="Search Name or ID..." onkeyup="searchOrders()">
                 </div>
                 <button class="exit-btn" onclick="handleLogout()">Logout</button>
             </div>
             <div class="dash-kpi">
-                <div class="kpi"><span>Total Orders</span><p id="totalSalesCount">0</p></div>
+                <div class="kpi"><span>Orders</span><p id="totalSalesCount">0</p></div>
                 <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
             <div class="table-scroll">
                 <table class="dash-table">
-                    <thead><tr><th>ID & Date</th><th>Customer</th><th>Summary</th><th>Total</th><th>Action</th></tr></thead>
+                    <thead><tr><th>ID & Date</th><th>Customer Details</th><th>Items</th><th>Total</th><th>Action</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
