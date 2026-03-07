@@ -19,7 +19,7 @@
         </div>
         <div class="search-area-prominent">
             <div class="search-wrap-pro">
-                <input type="text" id="search-bar" placeholder="Search tools, paints, electricals..." onkeyup="filterProducts()">
+                <input type="text" id="search-bar" placeholder="Search brands, tools, paints..." onkeyup="filterProducts()">
                 <button class="search-go-pro"><i class="fas fa-search"></i></button>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div id="cart-items-list" class="panel-scrollable"></div>
         <div class="panel-bottom">
             <div class="grand-total"><span>Total Amount:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
+            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm & Send</button>
             <button class="clear-btn-text" onclick="clearCart()">Clear All Items</button>
         </div>
     </div>
@@ -54,10 +54,18 @@
         <section class="category-section">
             <h3 class="section-title">Shop by Category</h3>
             <div class="category-strip">
-                <div class="cat-item" onclick="setCategory('tools')"><img src="images/tools-cat.jpg"><span>Tools</span></div>
-                <div class="cat-item" onclick="setCategory('electrical')"><img src="images/elec-cat.jpg"><span>Electrical</span></div>
-                <div class="cat-item" onclick="setCategory('paint')"><img src="images/paint-cat.jpg"><span>Paints</span></div>
-                <div class="cat-item" onclick="setCategory('hardware')"><img src="images/hard-cat.jpg"><span>General</span></div>
+                <div class="cat-item" onclick="setCategory('tools')">
+                    <img src="images/tools-cat.jpg"><span>Tools</span>
+                </div>
+                <div class="cat-item" onclick="setCategory('electrical')">
+                    <img src="images/elec-cat.jpg"><span>Electrical</span>
+                </div>
+                <div class="cat-item" onclick="setCategory('paint')">
+                    <img src="images/paint-cat.jpg"><span>Paints</span>
+                </div>
+                <div class="cat-item" onclick="setCategory('hardware')">
+                    <img src="images/hard-cat.jpg"><span>General</span>
+                </div>
             </div>
         </section>
 
@@ -100,12 +108,12 @@
             <div class="dash-nav">
                 <h2>Cloud Analytics</h2>
                 <div class="dash-search-group">
-                    <input type="text" id="dash-search" placeholder="Search Name/Order ID..." onkeyup="searchOrders()">
+                    <input type="text" id="dash-search" placeholder="Search Name/ID..." onkeyup="searchOrders()">
                 </div>
                 <button class="exit-btn" onclick="closeDashboard()">Exit</button>
             </div>
             <div class="dash-kpi">
-                <div class="kpi"><span>Total Orders</span><p id="totalSalesCount">0</p></div>
+                <div class="kpi"><span>Orders</span><p id="totalSalesCount">0</p></div>
                 <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
             <div class="table-scroll">
