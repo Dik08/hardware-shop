@@ -54,14 +54,7 @@
             <div class="f-col">
                 <h4>Contact Details</h4>
                 <p><i class="fas fa-phone"></i> +91 9547675034</p>
-                <p><i class="fas fa-envelope"></i> contact@ashirbadhardware.in</p>
-                <p><i class="fas fa-map-marker-alt"></i> Main Road, Opposite Petrol Pump, Chandpara, 743245</p>
-            </div>
-            <div class="f-col">
-                <h4>Follow Us</h4>
-                <div class="social-icons">
-                    <i class="fab fa-facebook"></i><i class="fab fa-instagram"></i><i class="fab fa-whatsapp"></i>
-                </div>
+                <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
             </div>
         </div>
         <div class="footer-bottom">© 2026 Ashirbad Hardware. Developed by Dik.</div>
@@ -72,7 +65,6 @@
         <ul class="nav-links">
             <li onclick="setCategory('all')"><i class="fas fa-home"></i> Home</li>
             <li onclick="setCategory('tools')"><i class="fas fa-hammer"></i> Tools</li>
-            <li onclick="setCategory('electrical')"><i class="fas fa-bolt"></i> Electrical</li>
             <li onclick="openLoginModal()" class="owner-entry"><i class="fas fa-user-lock"></i> Owner Login</li>
         </ul>
     </div>
@@ -93,23 +85,25 @@
             <input type="text" id="adminUser" placeholder="Username">
             <input type="password" id="adminPass" placeholder="Password">
             <button class="wp-order-btn" onclick="handleLogin()">Login</button>
+            <button onclick="closeModal()" class="clear-all">Cancel</button>
         </div>
     </div>
 
     <div id="adminDashboard" class="modal-bg">
         <div class="modal-box dash-box">
-            <div class="dash-head"><h2>Live Sales Analytics</h2><button onclick="closeDashboard()">Close</button></div>
+            <div class="dash-head"><h2>Cloud Analytics</h2><button onclick="closeDashboard()">Logout</button></div>
             <div class="dash-stats">
                 <div class="stat-item"><span>Orders</span><p id="totalSalesCount">0</p></div>
                 <div class="stat-item highlight"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
             <div class="table-wrap">
-                <table id="salesTable"><thead><tr><th>Date</th><th>Summary</th><th>Value</th></tr></thead><tbody id="salesBody"></tbody></table>
+                <table><thead><tr><th>Date</th><th>Summary</th><th>Value</th></tr></thead><tbody id="salesBody"></tbody></table>
             </div>
         </div>
     </div>
 
     <div id="productModal" class="modal-bg"></div>
+
     <script src="app.js"></script>
 </body>
 </html>
