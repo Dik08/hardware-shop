@@ -19,7 +19,7 @@
         </div>
         <div class="search-area">
             <div class="search-wrap">
-                <input type="text" id="search-bar" placeholder="Search tools, paints..." onkeyup="filterProducts()">
+                <input type="text" id="search-bar" placeholder="What are you looking for?" onkeyup="filterProducts()">
                 <button class="search-go"><i class="fas fa-search"></i></button>
             </div>
         </div>
@@ -38,10 +38,14 @@
 
     <div id="cart-panel" class="flyout-panel right">
         <div class="panel-head">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
+        <div class="customer-inputs">
+            <input type="text" id="cust-name" placeholder="Your Name *">
+            <input type="tel" id="cust-phone" placeholder="Phone Number *">
+        </div>
         <div id="cart-items-list" class="panel-scrollable"></div>
         <div class="panel-bottom">
-            <div class="grand-total"><span>Total:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
+            <div class="grand-total"><span>Total Amount:</span><span id="cart-total-amt">₹0</span></div>
+            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm Order</button>
             <button class="clear-btn" onclick="clearCart()">Clear All Items</button>
         </div>
     </div>
@@ -53,7 +57,7 @@
         </section>
 
         <section id="all-products">
-            <h2 class="section-title">All Products</h2>
+            <h2 class="section-title">Product Catalog</h2>
             <div id="product-list" class="product-grid"></div>
         </section>
     </main>
@@ -61,7 +65,7 @@
     <footer class="shop-footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <h4>Contact Details</h4>
+                <h4>Contact Store</h4>
                 <p><i class="fas fa-phone"></i> +91 9547675034</p>
                 <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
             </div>
@@ -71,24 +75,24 @@
 
     <div id="loginModal" class="modal-root">
         <div class="modal-box small">
-            <h3>Admin Login</h3>
+            <h3>Admin Authentication</h3>
             <input type="text" id="adminUser" placeholder="Username">
             <input type="password" id="adminPass" placeholder="Password">
-            <button class="blue-btn" onclick="handleLogin()">Login</button>
+            <button class="blue-btn" onclick="handleLogin()">LOGIN</button>
             <button class="clear-btn" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <div id="adminDashboard" class="modal-root">
         <div class="modal-box large">
-            <div class="dash-nav"><h2>Cloud Dashboard</h2><button onclick="closeDashboard()">Exit</button></div>
+            <div class="dash-nav"><h2><i class="fas fa-chart-line"></i> Business Analytics</h2><button onclick="closeDashboard()">Logout</button></div>
             <div class="dash-kpi">
-                <div class="kpi"><span>Orders</span><p id="totalSalesCount">0</p></div>
+                <div class="kpi"><span>Total Orders</span><p id="totalSalesCount">0</p></div>
                 <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
             </div>
             <div class="table-scroll">
-                <table>
-                    <thead><tr><th>Date</th><th>Description</th><th>Price</th><th>Action</th></tr></thead>
+                <table class="dash-table">
+                    <thead><tr><th>Date</th><th>Customer</th><th>Summary</th><th>Total</th><th>Action</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
@@ -96,7 +100,6 @@
     </div>
 
     <div id="productModal" class="modal-root"></div>
-
     <script src="app.js"></script>
 </body>
 </html>
