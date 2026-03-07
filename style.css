@@ -1,40 +1,41 @@
-:root { --blue: #2e41b6; --white: #fff; --gray: #f4f4f4; --text: #333; }
-body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--white); color: var(--text); overflow-x: hidden; }
+:root { --blue: #2e41b6; --white: #fff; --text: #333; }
+body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--white); overflow-x: hidden; }
 
-/* Header & Search */
+/* Sticky Header */
 .main-header { position: sticky; top: 0; background: white; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .nav-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
 .brand-logo { font-weight: 900; color: var(--blue); letter-spacing: 1.5px; }
 .search-box { padding: 0 20px 15px; }
 .search-inner { display: flex; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
 .search-inner input { flex: 1; border: none; padding: 12px; outline: none; }
-.search-btn { background: var(--blue); color: white; border: none; padding: 0 15px; }
-.showroom-strip { background: #fafafa; text-align: center; font-size: 0.75rem; padding: 8px; color: #666; border-top: 1px solid #eee; }
+.search-btn { background: var(--blue); color: white; border: none; padding: 0 15px; cursor: pointer; }
 
-/* Product Cards & Floating Effect */
+/* Fixed: Overlays */
+.side-overlay { 
+    position: fixed; top: 0; height: 100%; width: 280px; 
+    background: white; z-index: 2000; transition: 0.4s ease; 
+    box-shadow: 0 0 25px rgba(0,0,0,0.2); 
+}
+.left { left: -300px; }
+.right { right: -320px; width: 320px; }
+
+/* Active states */
+.active-l { left: 0 !important; }
+.active-r { right: 0 !important; }
+
+/* Product Grid & Cards */
 .pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
 .product-card { background: white; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: 0.3s; border: 1px solid #f0f0f0; }
 .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
-.product-card img { width: 100%; height: 130px; object-fit: contain; cursor: pointer; }
-.stock-label { color: #2ecc71; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
-.card-price { color: var(--blue); font-weight: 800; font-size: 1.1rem; margin: 5px 0; }
+.product-card img { width: 100%; height: 120px; object-fit: contain; cursor: pointer; }
 
-/* Cart Styling */
-.cart-body { padding: 15px; flex: 1; overflow-y: auto; }
+/* Cart Body & Rows */
+.cart-body { padding: 15px; height: calc(100% - 220px); overflow-y: auto; }
 .cart-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; }
-.cart-footer { padding: 20px; background: #fafafa; border-top: 2px solid var(--blue); }
-.cart-total-line { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin-bottom: 15px; }
-.wp-order-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.cart-footer { position: absolute; bottom: 0; width: 100%; background: #fdfdfd; padding: 20px; border-top: 2px solid var(--blue); box-sizing: border-box; }
 
-/* Modals & Dashboard */
+/* Modals */
 .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 3000; justify-content: center; align-items: center; }
 .modal-box { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; }
-.dash-box { max-width: 900px; height: 85vh; overflow-y: auto; }
-.dash-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-.stat-item { background: #f8f9ff; padding: 15px; border-radius: 8px; text-align: center; }
-.stat-item.highlight p { color: var(--blue); font-weight: 900; font-size: 1.4rem; margin: 0; }
 
-/* Footer Styling */
-.main-footer { background: #fdfdfd; padding: 40px 20px 20px; border-top: 1px solid #eee; margin-top: 40px; }
-.footer-grid { display: grid; gap: 20px; }
-.social-icons i { font-size: 1.5rem; margin-right: 15px; color: #777; }
+.wp-order-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
