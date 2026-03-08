@@ -1,4 +1,4 @@
-// FIREBASE INITIALIZATION
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyAfO4vESUV5EweTKwZ8z37xhQAvAptihVI",
   authDomain: "ashirbad-hardware-388ff.firebaseapp.com",
@@ -8,7 +8,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-const auth = firebase.auth(); // cite: 1.3
+const auth = firebase.auth();
 
 let products = [];
 let cart = [];
@@ -23,38 +23,33 @@ async function loadProducts() {
     } catch (e) { console.error(e); }
 }
 
-// 1. FIREBASE AUTHENTICATION
+// THEME TOGGLES
+function toggleSearch() { document.getElementById('search-overlay').classList.toggle('active'); }
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
+function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
+
+function renderProducts(list, target) {
+    const container = document.getElementById(target);
+    container.innerHTML = list.map(item => `
+        <div class="product-card" onclick="addToCart(${item.id})">
+            <div class="discount-tag">NEW ARRIVAL</div>
+            <img src="images/${item.img}" alt="${item.name}">
+            <div class="card-info">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+            </div>
+        </div>`).join('');
+}
+
+// DASHBOARD LOGIC
 function handleAuthLogin() {
     const email = document.getElementById('adminEmail').value;
     const pass = document.getElementById('adminPass').value;
-
-    auth.signInWithEmailAndPassword(email, pass)
-        .then(() => {
-            closeModal();
-            document.getElementById('adminDashboard').style.display = 'flex';
-            syncDashboard();
-        })
-        .catch((error) => {
-            alert("Secure Access Denied: " + error.message);
-        });
-}
-
-function handleLogout() {
-    auth.signOut().then(() => {
-        document.getElementById('adminDashboard').style.display = 'none';
-        alert("Logged out successfully.");
-    });
-}
-
-// 2. SEARCH & LOCATION
-function openLocation() { window.open("https://maps.google.com/?q=Chandpara+Hardware", "_blank"); } // cite: 1.1
-
-function searchOrders() {
-    const term = document.getElementById('dash-search').value.toLowerCase();
-    const filtered = allOrders.filter(o => 
-        o.customer.toLowerCase().includes(term) || (o.id && o.id.toLowerCase().includes(term))
-    );
-    displayOrdersInTable(filtered);
+    auth.signInWithEmailAndPassword(email, pass).then(() => {
+        closeModal();
+        document.getElementById('adminDashboard').style.display = 'flex';
+        syncDashboard();
+    }).catch(err => alert(err.message));
 }
 
 function syncDashboard() {
@@ -62,61 +57,40 @@ function syncDashboard() {
         const data = snap.val();
         if (!data) return;
         allOrders = Object.keys(data).map(key => ({ dbId: key, ...data[key] }));
-        displayOrdersInTable(allOrders);
+        document.getElementById('totalSalesCount').innerText = allOrders.length;
+        document.getElementById('totalRevenue').innerText = `₹${allOrders.reduce((s, o) => s + o.total, 0)}`;
+        document.getElementById('salesBody').innerHTML = allOrders.map(o => `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${o.customer}</td>
+                <td>₹${o.total}</td>
+                <td><button onclick="deleteOrder('${o.dbId}')">DEL</button></td>
+            </tr>`).reverse().join('');
     });
 }
-
-function displayOrdersInTable(list) {
-    document.getElementById('totalSalesCount').innerText = list.length;
-    document.getElementById('totalRevenue').innerText = `₹${list.reduce((s, i) => s + i.total, 0).toLocaleString()}`;
-    document.getElementById('salesBody').innerHTML = list.map(s => `
-        <tr>
-            <td><span style="color:#888;">#${s.id}</span><br>${s.date}</td>
-            <td><b>${s.customer}</b><br><span style="color:var(--blue);">${s.phone}</span></td>
-            <td>${s.items}</td>
-            <td><b>₹${s.total}</b></td>
-            <td><i class="fas fa-trash" onclick="deleteOrder('${s.dbId}')" style="color:red; cursor:pointer;"></i></td>
-        </tr>`).reverse().join('');
-}
-
-// 3. CORE FUNCTIONS
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
-function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
-function closeModal() { document.querySelectorAll('.modal-root').forEach(m => m.style.display = 'none'); }
-function deleteOrder(id) { if(confirm("Confirm: Delete record?")) database.ref('orders/' + id).remove(); }
 
 function sendToWhatsApp() {
     const name = document.getElementById('cust-name').value;
     const phone = document.getElementById('cust-phone').value;
-    if (!name || !phone) return alert("Enter Info!");
+    if (!name || !phone) return alert("NAME/PHONE REQUIRED");
     const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
-    const orderId = "ASH" + Date.now().toString().slice(-4);
-    database.ref('orders').push({ id: orderId, date: new Date().toLocaleString(), customer: name, phone: phone, items: cart.map(i => i.name).join(', '), total: total });
-    window.open(`https://wa.me/919547675034?text=Order ID: ${orderId}%0ACustomer: ${name}%0ATotal: ₹${total}`);
+    const orderId = Date.now().toString().slice(-4);
+    database.ref('orders').push({ id: orderId, customer: name, phone: phone, total: total });
+    window.open(`https://wa.me/919547675034?text=ORDER ID: ${orderId}%0ANAME: ${name}%0ATOTAL: ₹${total}`);
 }
 
 function filterProducts() {
     const term = document.getElementById('search-bar').value.toLowerCase();
     const filtered = products.filter(p => p.name.toLowerCase().includes(term) && (currentCategory === 'all' || p.category === currentCategory));
-    document.getElementById('product-list').innerHTML = filtered.map(item => `
-        <div class="product-card">
-            <span style="color:#2ecc71; font-size:0.7rem; font-weight:bold;"><i class="fas fa-check-circle"></i> In stock</span>
-            <img src="images/${item.img}" alt="${item.name}">
-            <h4 style="margin: 8px 0; font-size: 0.85rem;">${item.name}</h4>
-            <p style="color:var(--blue); font-weight:800;">₹${item.price}</p>
-            <button class="blue-btn" style="padding:10px; font-size:0.75rem;" onclick="addToCart(${item.id})">ADD TO CART</button>
-        </div>`).join('');
+    renderProducts(filtered, 'product-list');
 }
 
-function setCategory(cat) { currentCategory = cat; if(document.getElementById('sidebar').classList.contains('active-l')) toggleSidebar(); filterProducts(); }
+function setCategory(cat) { currentCategory = cat; toggleSidebar(); filterProducts(); }
 function addToCart(id) {
     const item = products.find(p => p.id === id);
-    const existing = cart.find(c => c.id === id);
-    if (existing) existing.quantity++; else cart.push({ ...item, quantity: 1 });
-    updateCartUI();
+    cart.push(item);
+    document.getElementById('cart-total-amt').innerText = `₹${cart.reduce((s, i) => s + i.price, 0)}`;
+    alert(`${item.name} ADDED TO BAG`);
 }
-function updateCartUI() {
-    document.getElementById('cart-items-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;"><span>${i.name} x${i.quantity}</span><span>₹${i.price*i.quantity}</span></div>`).join('');
-    document.getElementById('cart-total-amt').innerText = `₹${cart.reduce((s, i) => s + (i.price * i.quantity), 0)}`;
-}
+function closeModal() { document.querySelectorAll('.modal-root').forEach(m => m.style.display = 'none'); }
 loadProducts();
