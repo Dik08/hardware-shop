@@ -12,110 +12,108 @@
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="nav-top">
-            <div class="header-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-            <div class="brand-name">ASHIRBAD HARDWARE</div>
-            <div class="header-icon" onclick="toggleCart()"><i class="fas fa-shopping-bag"></i></div>
+    <nav class="aesthetic-nav">
+        <div class="nav-left" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <div class="brand-logo-main">ASHIRBAD</div>
+        <div class="nav-right">
+            <i class="fas fa-search" onclick="toggleSearch()"></i>
+            <i class="fas fa-shopping-bag" onclick="toggleCart()"></i>
         </div>
-        <div class="search-area-prominent">
-            <div class="search-wrap-pro">
-                <input type="text" id="search-bar" placeholder="Search brands, tools, paints..." onkeyup="filterProducts()">
-                <button class="search-go-pro"><i class="fas fa-search"></i></button>
-            </div>
+    </nav>
+
+    <div id="search-overlay" class="search-fullscreen">
+        <input type="text" id="search-bar" placeholder="SEARCH PRODUCTS..." onkeyup="filterProducts()">
+        <span class="close-search" onclick="toggleSearch()">&times;</span>
+    </div>
+
+    <header class="hero-banner">
+        <div class="hero-content">
+            <h1>AESTHETIC<br>HARDWARE</h1>
+            <p>PREMIUM TOOLS FOR MODERN CRAFTS</p>
         </div>
-        <div class="location-bar"><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, North 24 Parganas</div>
     </header>
 
-    <section class="banner-container">
-        <img src="images/shop-banner.jpg" alt="Ashirbad Hardware Banner" class="main-banner">
-    </section>
-
-    <div id="sidebar" class="flyout-panel left">
-        <div class="panel-head">MENU <span onclick="toggleSidebar()">&times;</span></div>
-        <ul class="panel-links">
-            <li onclick="setCategory('all')"><i class="fas fa-home"></i> Home</li>
-            <li onclick="openLocation()"><i class="fas fa-map-marked-alt"></i> Visit Our Shop</li>
-            <li onclick="setCategory('tools')"><i class="fas fa-hammer"></i> Tools</li>
-            <li onclick="setCategory('electrical')"><i class="fas fa-bolt"></i> Electrical</li>
-            <div class="admin-divider">OWNER ZONE</div>
-            <li onclick="openLoginModal()" class="owner-zone"><i class="fas fa-user-shield"></i> Dashboard Access</li>
-        </ul>
+    <div class="promo-scroller">
+        <span>✦ 10% OFF ON FIRST ORDER ✦ FLAT ₹500 OFF ON PAINTS ✦ QUALITY GUARANTEED ✦ CHANDPARA'S FINEST ✦</span>
     </div>
 
-    <div id="cart-panel" class="flyout-panel right">
-        <div class="panel-head">YOUR ORDER <span onclick="toggleCart()">&times;</span></div>
-        <div class="customer-info-box">
-            <input type="text" id="cust-name" placeholder="Customer Name *">
-            <input type="tel" id="cust-phone" placeholder="Phone Number *">
-        </div>
-        <div id="cart-items-list" class="panel-scrollable"></div>
-        <div class="panel-bottom">
-            <div class="grand-total"><span>Total Amount:</span><span id="cart-total-amt">₹0</span></div>
-            <button class="blue-btn" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> Confirm & Send</button>
-            <button class="clear-btn-text" onclick="clearCart()">Clear All Items</button>
-        </div>
-    </div>
-
-    <main class="page-container">
-        <section class="category-section">
-            <h3 class="section-title">Shop by Category</h3>
-            <div class="category-strip">
-                <div class="cat-item" onclick="setCategory('tools')"><img src="images/tools-cat.jpg"><span>Tools</span></div>
-                <div class="cat-item" onclick="setCategory('electrical')"><img src="images/elec-cat.jpg"><span>Electrical</span></div>
-                <div class="cat-item" onclick="setCategory('paint')"><img src="images/paint-cat.jpg"><span>Paints</span></div>
-                <div class="cat-item" onclick="setCategory('hardware')"><img src="images/hard-cat.jpg"><span>Hardware</span></div>
-            </div>
+    <main class="aesthetic-container">
+        <section class="filter-sort-bar">
+            <button class="aesthetic-btn-outline" onclick="setCategory('all')">FILTER</button>
+            <button class="aesthetic-btn-outline">SORT</button>
         </section>
+
         <section id="featured-section" style="display:none;">
-            <h2 class="section-title">⭐ Best Sellers</h2>
-            <div id="featured-list" class="product-grid"></div>
+            <h2 class="aesthetic-title">BEST SELLERS</h2>
+            <div id="featured-list" class="aesthetic-grid"></div>
         </section>
+
         <section id="all-products">
-            <h2 class="section-title">Product Catalog</h2>
-            <div id="product-list" class="product-grid"></div>
+            <div id="product-list" class="aesthetic-grid"></div>
         </section>
     </main>
 
-    <footer class="shop-footer">
-        <p><i class="fas fa-map-marker-alt"></i> Main Road, Chandpara, 743245</p>
-        <p>© 2026 Ashirbad Hardware | Developed by Dik</p>
+    <div id="sidebar" class="zaydn-panel left">
+        <div class="panel-head">MENU <span onclick="toggleSidebar()">×</span></div>
+        <ul class="panel-links">
+            <li onclick="setCategory('all')">HOME</li>
+            <li onclick="openLocation()">LOCATION</li>
+            <li onclick="setCategory('tools')">TOOLS</li>
+            <li onclick="setCategory('electrical')">ELECTRICAL</li>
+            <div class="divider"></div>
+            <li onclick="openLoginModal()" class="admin-link">OWNER LOGIN</li>
+        </ul>
+    </div>
+
+    <div id="cart-panel" class="zaydn-panel right">
+        <div class="panel-head">YOUR BAG <span onclick="toggleCart()">×</span></div>
+        <div class="cust-box">
+            <input type="text" id="cust-name" placeholder="YOUR NAME">
+            <input type="tel" id="cust-phone" placeholder="PHONE NUMBER">
+        </div>
+        <div id="cart-items-list" class="bag-body"></div>
+        <div class="bag-footer">
+            <div class="total-line"><span>TOTAL</span><span id="cart-total-amt">₹0</span></div>
+            <button class="aesthetic-btn-black" onclick="sendToWhatsApp()">CHECKOUT VIA WHATSAPP</button>
+        </div>
+    </div>
+
+    <footer class="aesthetic-footer">
+        <div class="footer-logo">ASHIRBAD</div>
+        <p>MAIN ROAD, CHANDPARA, 743245</p>
+        <div class="socials">
+            <i class="fab fa-instagram"></i><i class="fab fa-facebook"></i>
+        </div>
+        <p class="copyright">© 2026 DEVELOPED BY DIK</p>
     </footer>
 
     <div id="loginModal" class="modal-root">
-        <div class="modal-box auth-card">
-            <div class="auth-icon"><i class="fas fa-user-lock"></i></div>
-            <h3>Owner Secure Access</h3>
-            <input type="email" id="adminEmail" placeholder="Registered Email">
-            <input type="password" id="adminPass" placeholder="Private Password">
-            <button class="blue-btn" onclick="handleAuthLogin()">LOGIN TO CLOUD</button>
-            <span class="cancel-span" onclick="closeModal()">Cancel</span>
+        <div class="modal-box brutalist">
+            <h3>ADMIN LOGIN</h3>
+            <input type="email" id="adminEmail" placeholder="EMAIL">
+            <input type="password" id="adminPass" placeholder="PASSWORD">
+            <button class="aesthetic-btn-black" onclick="handleAuthLogin()">AUTHENTICATE</button>
+            <p onclick="closeModal()" class="cancel-link">CANCEL</p>
         </div>
     </div>
 
     <div id="adminDashboard" class="modal-root">
-        <div class="modal-box dashboard-card">
-            <div class="dash-nav">
-                <h2>Business Analytics</h2>
-                <div class="dash-search-group">
-                    <input type="text" id="dash-search" placeholder="Search Name or Order ID..." onkeyup="searchOrders()">
-                </div>
-                <button class="exit-btn" onclick="handleLogout()">Logout</button>
+        <div class="modal-box dashboard-brutalist">
+            <div class="dash-head"><h2>ANALYTICS</h2><button onclick="handleLogout()">LOGOUT</button></div>
+            <div class="kpi-row">
+                <div class="kpi-box">ORDERS<p id="totalSalesCount">0</p></div>
+                <div class="kpi-box">REVENUE<p id="totalRevenue">₹0</p></div>
             </div>
-            <div class="dash-kpi">
-                <div class="kpi"><span>Total Orders</span><p id="totalSalesCount">0</p></div>
-                <div class="kpi blue"><span>Revenue</span><p id="totalRevenue">₹0</p></div>
-            </div>
-            <div class="table-scroll">
-                <table class="dash-table">
-                    <thead><tr><th>ID & Date</th><th>Customer</th><th>Summary</th><th>Total</th><th>Action</th></tr></thead>
+            <div class="table-container">
+                <table class="brutalist-table">
+                    <thead><tr><th>ID</th><th>CUSTOMER</th><th>TOTAL</th><th>ACTION</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
+            <button class="aesthetic-btn-black" onclick="closeDashboard()">CLOSE</button>
         </div>
     </div>
 
-    <div id="productModal" class="modal-root"></div>
     <script src="app.js"></script>
 </body>
 </html>
