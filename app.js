@@ -13,35 +13,54 @@ const auth = firebase.auth();
 let products = [];
 let cart = [];
 let allOrders = [];
-let currentCategory = 'all';
 
 async function loadProducts() {
     try {
         const res = await fetch('products.json');
         products = await res.json();
-        filterProducts();
+        renderGrid(products);
     } catch (e) { console.error(e); }
 }
 
-// THEME TOGGLES
-function toggleSearch() { document.getElementById('search-overlay').classList.toggle('active'); }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
-function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
-
-function renderProducts(list, target) {
-    const container = document.getElementById(target);
-    container.innerHTML = list.map(item => `
+function renderGrid(list) {
+    document.getElementById('product-grid').innerHTML = list.map(item => `
         <div class="product-card" onclick="addToCart(${item.id})">
-            <div class="discount-tag">NEW ARRIVAL</div>
+            <div class="sale-badge">SALE</div>
             <img src="images/${item.img}" alt="${item.name}">
-            <div class="card-info">
-                <h4>${item.name}</h4>
-                <p>₹${item.price}</p>
-            </div>
+            <h4 style="margin:10px 0 0; font-weight:900; font-size:0.8rem; text-transform:uppercase;">${item.name}</h4>
+            <p style="margin:5px 0 0; font-weight:bold; font-size:0.75rem;">₹${item.price}</p>
         </div>`).join('');
 }
 
-// DASHBOARD LOGIC
+// DASHBOARD SEARCH & SYNC
+function searchOrders() {
+    const term = document.getElementById('dash-search').value.toLowerCase();
+    const filtered = allOrders.filter(o => o.customer.toLowerCase().includes(term) || o.id.includes(term));
+    renderTable(filtered);
+}
+
+function syncDashboard() {
+    database.ref('orders').on('value', (snap) => {
+        const data = snap.val();
+        if (!data) return;
+        allOrders = Object.keys(data).map(key => ({ dbId: key, ...data[key] }));
+        renderTable(allOrders);
+    });
+}
+
+function renderTable(list) {
+    document.getElementById('totalSalesCount').innerText = list.length;
+    document.getElementById('totalRevenue').innerText = `₹${list.reduce((s, o) => s + o.total, 0)}`;
+    document.getElementById('salesBody').innerHTML = list.map(o => `
+        <tr>
+            <td>#${o.id}</td>
+            <td>${o.customer}</td>
+            <td>₹${o.total}</td>
+            <td><i class="fas fa-trash" onclick="deleteOrder('${o.dbId}')"></i></td>
+        </tr>`).reverse().join('');
+}
+
+// FIREBASE AUTH
 function handleAuthLogin() {
     const email = document.getElementById('adminEmail').value;
     const pass = document.getElementById('adminPass').value;
@@ -52,45 +71,25 @@ function handleAuthLogin() {
     }).catch(err => alert(err.message));
 }
 
-function syncDashboard() {
-    database.ref('orders').on('value', (snap) => {
-        const data = snap.val();
-        if (!data) return;
-        allOrders = Object.keys(data).map(key => ({ dbId: key, ...data[key] }));
-        document.getElementById('totalSalesCount').innerText = allOrders.length;
-        document.getElementById('totalRevenue').innerText = `₹${allOrders.reduce((s, o) => s + o.total, 0)}`;
-        document.getElementById('salesBody').innerHTML = allOrders.map(o => `
-            <tr>
-                <td>#${o.id}</td>
-                <td>${o.customer}</td>
-                <td>₹${o.total}</td>
-                <td><button onclick="deleteOrder('${o.dbId}')">DEL</button></td>
-            </tr>`).reverse().join('');
-    });
-}
-
 function sendToWhatsApp() {
     const name = document.getElementById('cust-name').value;
     const phone = document.getElementById('cust-phone').value;
-    if (!name || !phone) return alert("NAME/PHONE REQUIRED");
-    const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+    if (!name || !phone) return alert("REQUIRED: NAME & PHONE");
+    const total = cart.reduce((s, i) => s + i.price, 0);
     const orderId = Date.now().toString().slice(-4);
     database.ref('orders').push({ id: orderId, customer: name, phone: phone, total: total });
-    window.open(`https://wa.me/919547675034?text=ORDER ID: ${orderId}%0ANAME: ${name}%0ATOTAL: ₹${total}`);
+    window.open(`https://wa.me/919547675034?text=ID: ${orderId}%0AName: ${name}%0ATotal: ₹${total}`);
 }
 
-function filterProducts() {
-    const term = document.getElementById('search-bar').value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(term) && (currentCategory === 'all' || p.category === currentCategory));
-    renderProducts(filtered, 'product-list');
-}
-
-function setCategory(cat) { currentCategory = cat; toggleSidebar(); filterProducts(); }
-function addToCart(id) {
+// TOGGLES
+function toggleSearch() { document.getElementById('search-overlay').classList.toggle('active'); }
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
+function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
+function addToCart(id) { 
     const item = products.find(p => p.id === id);
     cart.push(item);
     document.getElementById('cart-total-amt').innerText = `₹${cart.reduce((s, i) => s + i.price, 0)}`;
-    alert(`${item.name} ADDED TO BAG`);
+    alert("ADDED TO BAG");
 }
 function closeModal() { document.querySelectorAll('.modal-root').forEach(m => m.style.display = 'none'); }
 loadProducts();
