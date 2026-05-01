@@ -1,39 +1,44 @@
-:root { --black: #000; --white: #fff; --blue: #2e41b6; --border: 3px solid #000; }
+:root { --black: #000; --white: #fff; --border: 3px solid #000; }
 body { font-family: 'Inter', sans-serif; margin: 0; background: var(--white); overflow-x: hidden; }
 
-/* ZAYDN Branding */
+/* ZAYDN Header */
 .zaydn-nav { 
     display: flex; justify-content: space-between; align-items: center; 
-    padding: 20px; border-bottom: var(--border); position: sticky; top: 0; background: white; z-index: 1000;
+    padding: 15px 20px; border-bottom: var(--border); position: sticky; top: 0; background: white; z-index: 1000;
 }
-.nav-brand { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+.nav-brand { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; }
+.nav-icon, .nav-right i { font-size: 1.2rem; cursor: pointer; padding: 5px; }
 
-/* Hero Section */
-.aesthetic-hero { 
-    height: 300px; background: #3498db; display: flex; align-items: center; justify-content: center; 
-    border-bottom: var(--border); text-align: center; color: white;
-}
-.hero-text h1 { font-size: 3.5rem; line-height: 0.8; margin: 0; font-weight: 900; }
+/* Hero Banner */
+.aesthetic-hero { height: 250px; position: relative; border-bottom: var(--border); background: #3498db; overflow: hidden; }
+.hero-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+.hero-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+.hero-overlay h1 { font-size: 3rem; font-weight: 900; line-height: 0.8; }
 
-/* Grid Design */
+/* Grid */
 .zaydn-grid { display: grid; grid-template-columns: 1fr 1fr; border-left: var(--border); }
-.product-card { 
-    border-right: var(--border); border-bottom: var(--border); padding: 15px; 
-    position: relative; transition: 0.3s;
-}
-.product-card img { width: 100%; height: 180px; object-fit: contain; }
-.sale-badge { 
-    position: absolute; top: 10px; right: 10px; background: #3498db; 
-    color: white; border: 2px solid #000; padding: 4px 8px; font-weight: 900; font-size: 0.6rem;
-}
+.product-card { border-right: var(--border); border-bottom: var(--border); padding: 15px; position: relative; text-align: left; }
+.product-card img { width: 100%; height: 160px; object-fit: contain; }
+.card-tag { position: absolute; top: 10px; right: 10px; background: #3498db; color: white; border: 2px solid #000; padding: 4px 8px; font-weight: 900; font-size: 0.6rem; }
+.product-card h4 { margin: 10px 0 0; font-weight: 900; text-transform: uppercase; font-size: 0.85rem; }
 
 /* Overlays */
-.flyout { position: fixed; top: 0; height: 100%; width: 320px; background: white; z-index: 2000; transition: 0.4s ease; border-left: var(--border); }
-.left { left: -350px; border-right: var(--border); }
-.right { right: -350px; }
+.panel-flyout { position: fixed; top: 0; height: 100%; width: 300px; background: white; z-index: 2000; transition: 0.4s ease; box-shadow: 0 0 30px rgba(0,0,0,0.2); }
+.left { left: -320px; border-right: var(--border); }
+.right { right: -320px; border-left: var(--border); }
 .active-l { left: 0 !important; }
 .active-r { right: 0 !important; }
 
-/* Buttons & Inputs */
-.black-btn { background: #000; color: #fff; border: none; padding: 15px; width: 100%; font-weight: 900; cursor: pointer; }
-.brutalist-btn-sm { background: #fff; border: var(--border); padding: 8px 15px; border-radius: 20px; font-weight: 900; margin: 15px 5px; cursor: pointer; }
+/* Buttons */
+.black-buy-btn { width: 100%; background: black; color: white; border: none; padding: 15px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+.brutalist-btn { background: white; border: var(--border); padding: 8px 15px; border-radius: 20px; font-weight: 900; margin: 15px 5px; cursor: pointer; }
+
+/* Dashboard UI */
+.modal-root { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; }
+.modal-card { background: white; border: var(--border); padding: 25px; width: 90%; max-width: 400px; box-shadow: 10px 10px 0 #000; }
+.dashboard-card { max-width: 1000px; height: 90vh; overflow-y: auto; }
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+.kpi-box { border: var(--border); padding: 15px; text-align: center; font-weight: 900; }
+.table-scroll { overflow-x: auto; }
+.brutalist-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.brutalist-table th, .brutalist-table td { border-bottom: var(--border); padding: 12px; text-align: left; font-size: 0.85rem; }
