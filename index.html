@@ -16,7 +16,7 @@
     <nav class="zaydn-nav">
         <div class="nav-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
         <div class="nav-brand">ASHIRBAD</div>
-        <div class="nav-actions">
+        <div class="nav-right">
             <i class="fas fa-search" onclick="toggleSearch()"></i>
             <i class="fas fa-shopping-bag" onclick="toggleCart()"></i>
         </div>
@@ -24,83 +24,92 @@
 
     <div id="search-overlay" class="search-modal">
         <input type="text" id="search-bar" placeholder="SEARCH FOR PRODUCTS..." onkeyup="filterProducts()">
-        <span onclick="toggleSearch()">&times;</span>
+        <span class="close-btn" onclick="toggleSearch()">&times;</span>
     </div>
 
-    <section class="aesthetic-hero">
-        <div class="hero-text">
+    <!-- Shop Banner Slot -->
+    <header class="aesthetic-hero">
+        <img src="images/shop-banner.jpg" alt="Ashirbad Hardware" class="hero-img">
+        <div class="hero-overlay">
             <h1>PREMIUM<br>HARDWARE</h1>
-            <p>CHANDPARA'S NEW STANDARD</p>
         </div>
-    </section>
+    </header>
 
-    <div class="promo-bar">
-        <div class="scroll-text">✦ FREE CONSULTATION ✦ FLAT 65% OFF ON SELECT TOOLS ✦ GENUINE QUALITY ✦ CHANDPARA MAIN ROAD ✦</div>
+    <div class="promo-ticker">
+        <div class="ticker-content">
+            ✦ FLAT 65% OFF ON SELECT TOOLS ✦ CHANDPARA MAIN ROAD ✦ QUALITY YOU TRUST ✦ OPEN DAILY ✦
+        </div>
     </div>
 
-    <main class="content-wrapper">
-        <div class="filter-controls">
-            <button class="brutalist-btn-sm" onclick="setCategory('all')">ALL ITEMS</button>
-            <button class="brutalist-btn-sm" onclick="setCategory('tools')">TOOLS</button>
-        </div>
+    <main class="main-container">
+        <section class="filter-bar">
+            <button class="brutalist-btn" onclick="setCategory('all')">ALL PRODUCTS</button>
+            <button class="brutalist-btn" onclick="openLocation()">LOCATION</button>
+        </section>
 
-        <section id="product-grid" class="zaydn-grid"></section>
+        <section id="product-list" class="zaydn-grid"></section>
     </main>
 
-    <!-- Overlays -->
-    <div id="sidebar" class="flyout left">
-        <div class="flyout-head">MENU <span onclick="toggleSidebar()">×</span></div>
-        <ul class="flyout-links">
+    <!-- Side Overlays -->
+    <div id="sidebar" class="panel-flyout left">
+        <div class="panel-header">MENU <span onclick="toggleSidebar()">×</span></div>
+        <ul class="panel-links">
             <li onclick="setCategory('all')">HOME</li>
-            <li onclick="openLocation()">LOCATION</li>
-            <li onclick="openLoginModal()" class="admin-link">OWNER DASHBOARD</li>
+            <li onclick="setCategory('tools')">TOOLS</li>
+            <li onclick="setCategory('electrical')">ELECTRICAL</li>
+            <div class="admin-divider">OWNER ZONE</div>
+            <li onclick="openLoginModal()" class="admin-link">LOGIN TO DASHBOARD</li>
         </ul>
     </div>
 
-    <div id="cart-panel" class="flyout right">
-        <div class="flyout-head">YOUR BAG <span onclick="toggleCart()">×</span></div>
-        <div class="order-inputs">
-            <input type="text" id="cust-name" placeholder="YOUR NAME">
+    <div id="cart-panel" class="panel-flyout right">
+        <div class="panel-header">YOUR BAG <span onclick="toggleCart()">×</span></div>
+        <div class="customer-inputs">
+            <input type="text" id="cust-name" placeholder="FULL NAME">
             <input type="tel" id="cust-phone" placeholder="PHONE NUMBER">
         </div>
-        <div id="cart-items-list" class="bag-items"></div>
+        <div id="cart-items-list" class="bag-body"></div>
         <div class="bag-footer">
-            <div class="total-row"><span>SUBTOTAL</span><span id="cart-total-amt">₹0</span></div>
-            <button class="black-btn" onclick="sendToWhatsApp()">SEND TO SHOP</button>
+            <div class="total-row"><span>TOTAL</span><span id="cart-total-amt">₹0</span></div>
+            <button class="black-buy-btn" onclick="sendToWhatsApp()">ORDER VIA WHATSAPP</button>
+            <p class="clear-all" onclick="clearCart()">CLEAR ALL</p>
         </div>
     </div>
 
-    <footer class="aesthetic-footer">
+    <footer class="shop-footer">
         <h3>ASHIRBAD</h3>
         <p>Main Road, Chandpara, 743245</p>
         <p>© 2026 DEVELOPED BY DIK</p>
     </footer>
 
-    <!-- Admin Portal -->
+    <!-- Admin Portal Modal -->
     <div id="loginModal" class="modal-root">
         <div class="modal-card">
-            <h3>ADMIN LOGIN</h3>
+            <h3>ADMIN PORTAL</h3>
             <input type="email" id="adminEmail" placeholder="EMAIL">
             <input type="password" id="adminPass" placeholder="PASSWORD">
-            <button class="black-btn" onclick="handleAuthLogin()">AUTHENTICATE</button>
-            <p onclick="closeModal()" class="cancel-text">CANCEL</p>
+            <button class="black-buy-btn" onclick="handleAuthLogin()">AUTHENTICATE</button>
+            <span class="cancel-text" onclick="closeModal()">CANCEL</span>
         </div>
     </div>
 
+    <!-- Analytics Dashboard Modal -->
     <div id="adminDashboard" class="modal-root">
         <div class="modal-card dashboard-card">
             <div class="dash-head">
                 <h2>ANALYTICS</h2>
-                <input type="text" id="dash-search" placeholder="Search orders..." onkeyup="searchOrders()">
-                <button onclick="handleLogout()">EXIT</button>
+                <div class="dash-search">
+                    <input type="text" id="dash-search-input" placeholder="Search Name/ID..." onkeyup="searchOrders()">
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">EXIT</button>
             </div>
-            <div class="kpi-row">
-                <div class="kpi">ORDERS<p id="totalSalesCount">0</p></div>
-                <div class="kpi">REVENUE<p id="totalRevenue">₹0</p></div>
+            <div class="kpi-grid">
+                <div class="kpi-box">ORDERS<p id="totalSalesCount">0</p></div>
+                <div class="kpi-box">REVENUE<p id="totalRevenue">₹0</p></div>
             </div>
-            <div class="table-wrap">
-                <table class="zaydn-table">
-                    <thead><tr><th>ID</th><th>NAME</th><th>TOTAL</th><th>ACTION</th></tr></thead>
+            <div class="table-scroll">
+                <table class="brutalist-table">
+                    <thead><tr><th>ID</th><th>CUSTOMER</th><th>TOTAL</th><th>ACTION</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
