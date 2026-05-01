@@ -6,111 +6,104 @@
     <title>Ashirbad Hardware | Chandpara</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <nav class="aesthetic-nav">
-        <div class="nav-left" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        <div class="brand-logo-main">ASHIRBAD</div>
-        <div class="nav-right">
+    <nav class="zaydn-nav">
+        <div class="nav-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <div class="nav-brand">ASHIRBAD</div>
+        <div class="nav-actions">
             <i class="fas fa-search" onclick="toggleSearch()"></i>
             <i class="fas fa-shopping-bag" onclick="toggleCart()"></i>
         </div>
     </nav>
 
-    <div id="search-overlay" class="search-fullscreen">
-        <input type="text" id="search-bar" placeholder="SEARCH PRODUCTS..." onkeyup="filterProducts()">
-        <span class="close-search" onclick="toggleSearch()">&times;</span>
+    <div id="search-overlay" class="search-modal">
+        <input type="text" id="search-bar" placeholder="SEARCH FOR PRODUCTS..." onkeyup="filterProducts()">
+        <span onclick="toggleSearch()">&times;</span>
     </div>
 
-    <header class="hero-banner">
-        <div class="hero-content">
-            <h1>AESTHETIC<br>HARDWARE</h1>
-            <p>PREMIUM TOOLS FOR MODERN CRAFTS</p>
+    <section class="aesthetic-hero">
+        <div class="hero-text">
+            <h1>PREMIUM<br>HARDWARE</h1>
+            <p>CHANDPARA'S NEW STANDARD</p>
         </div>
-    </header>
+    </section>
 
-    <div class="promo-scroller">
-        <span>✦ 10% OFF ON FIRST ORDER ✦ FLAT ₹500 OFF ON PAINTS ✦ QUALITY GUARANTEED ✦ CHANDPARA'S FINEST ✦</span>
+    <div class="promo-bar">
+        <div class="scroll-text">✦ FREE CONSULTATION ✦ FLAT 65% OFF ON SELECT TOOLS ✦ GENUINE QUALITY ✦ CHANDPARA MAIN ROAD ✦</div>
     </div>
 
-    <main class="aesthetic-container">
-        <section class="filter-sort-bar">
-            <button class="aesthetic-btn-outline" onclick="setCategory('all')">FILTER</button>
-            <button class="aesthetic-btn-outline">SORT</button>
-        </section>
+    <main class="content-wrapper">
+        <div class="filter-controls">
+            <button class="brutalist-btn-sm" onclick="setCategory('all')">ALL ITEMS</button>
+            <button class="brutalist-btn-sm" onclick="setCategory('tools')">TOOLS</button>
+        </div>
 
-        <section id="featured-section" style="display:none;">
-            <h2 class="aesthetic-title">BEST SELLERS</h2>
-            <div id="featured-list" class="aesthetic-grid"></div>
-        </section>
-
-        <section id="all-products">
-            <div id="product-list" class="aesthetic-grid"></div>
-        </section>
+        <section id="product-grid" class="zaydn-grid"></section>
     </main>
 
-    <div id="sidebar" class="zaydn-panel left">
-        <div class="panel-head">MENU <span onclick="toggleSidebar()">×</span></div>
-        <ul class="panel-links">
+    <!-- Overlays -->
+    <div id="sidebar" class="flyout left">
+        <div class="flyout-head">MENU <span onclick="toggleSidebar()">×</span></div>
+        <ul class="flyout-links">
             <li onclick="setCategory('all')">HOME</li>
             <li onclick="openLocation()">LOCATION</li>
-            <li onclick="setCategory('tools')">TOOLS</li>
-            <li onclick="setCategory('electrical')">ELECTRICAL</li>
-            <div class="divider"></div>
-            <li onclick="openLoginModal()" class="admin-link">OWNER LOGIN</li>
+            <li onclick="openLoginModal()" class="admin-link">OWNER DASHBOARD</li>
         </ul>
     </div>
 
-    <div id="cart-panel" class="zaydn-panel right">
-        <div class="panel-head">YOUR BAG <span onclick="toggleCart()">×</span></div>
-        <div class="cust-box">
+    <div id="cart-panel" class="flyout right">
+        <div class="flyout-head">YOUR BAG <span onclick="toggleCart()">×</span></div>
+        <div class="order-inputs">
             <input type="text" id="cust-name" placeholder="YOUR NAME">
             <input type="tel" id="cust-phone" placeholder="PHONE NUMBER">
         </div>
-        <div id="cart-items-list" class="bag-body"></div>
+        <div id="cart-items-list" class="bag-items"></div>
         <div class="bag-footer">
-            <div class="total-line"><span>TOTAL</span><span id="cart-total-amt">₹0</span></div>
-            <button class="aesthetic-btn-black" onclick="sendToWhatsApp()">CHECKOUT VIA WHATSAPP</button>
+            <div class="total-row"><span>SUBTOTAL</span><span id="cart-total-amt">₹0</span></div>
+            <button class="black-btn" onclick="sendToWhatsApp()">SEND TO SHOP</button>
         </div>
     </div>
 
     <footer class="aesthetic-footer">
-        <div class="footer-logo">ASHIRBAD</div>
-        <p>MAIN ROAD, CHANDPARA, 743245</p>
-        <div class="socials">
-            <i class="fab fa-instagram"></i><i class="fab fa-facebook"></i>
-        </div>
-        <p class="copyright">© 2026 DEVELOPED BY DIK</p>
+        <h3>ASHIRBAD</h3>
+        <p>Main Road, Chandpara, 743245</p>
+        <p>© 2026 DEVELOPED BY DIK</p>
     </footer>
 
+    <!-- Admin Portal -->
     <div id="loginModal" class="modal-root">
-        <div class="modal-box brutalist">
+        <div class="modal-card">
             <h3>ADMIN LOGIN</h3>
             <input type="email" id="adminEmail" placeholder="EMAIL">
             <input type="password" id="adminPass" placeholder="PASSWORD">
-            <button class="aesthetic-btn-black" onclick="handleAuthLogin()">AUTHENTICATE</button>
-            <p onclick="closeModal()" class="cancel-link">CANCEL</p>
+            <button class="black-btn" onclick="handleAuthLogin()">AUTHENTICATE</button>
+            <p onclick="closeModal()" class="cancel-text">CANCEL</p>
         </div>
     </div>
 
     <div id="adminDashboard" class="modal-root">
-        <div class="modal-box dashboard-brutalist">
-            <div class="dash-head"><h2>ANALYTICS</h2><button onclick="handleLogout()">LOGOUT</button></div>
-            <div class="kpi-row">
-                <div class="kpi-box">ORDERS<p id="totalSalesCount">0</p></div>
-                <div class="kpi-box">REVENUE<p id="totalRevenue">₹0</p></div>
+        <div class="modal-card dashboard-card">
+            <div class="dash-head">
+                <h2>ANALYTICS</h2>
+                <input type="text" id="dash-search" placeholder="Search orders..." onkeyup="searchOrders()">
+                <button onclick="handleLogout()">EXIT</button>
             </div>
-            <div class="table-container">
-                <table class="brutalist-table">
-                    <thead><tr><th>ID</th><th>CUSTOMER</th><th>TOTAL</th><th>ACTION</th></tr></thead>
+            <div class="kpi-row">
+                <div class="kpi">ORDERS<p id="totalSalesCount">0</p></div>
+                <div class="kpi">REVENUE<p id="totalRevenue">₹0</p></div>
+            </div>
+            <div class="table-wrap">
+                <table class="zaydn-table">
+                    <thead><tr><th>ID</th><th>NAME</th><th>TOTAL</th><th>ACTION</th></tr></thead>
                     <tbody id="salesBody"></tbody>
                 </table>
             </div>
-            <button class="aesthetic-btn-black" onclick="closeDashboard()">CLOSE</button>
         </div>
     </div>
 
