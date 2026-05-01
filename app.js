@@ -18,25 +18,28 @@ async function loadProducts() {
     try {
         const res = await fetch('products.json');
         products = await res.json();
-        renderGrid(products);
+        renderList(products);
     } catch (e) { console.error(e); }
 }
 
-function renderGrid(list) {
-    document.getElementById('product-grid').innerHTML = list.map(item => `
+function renderList(list) {
+    document.getElementById('product-list').innerHTML = list.map(item => `
         <div class="product-card" onclick="addToCart(${item.id})">
-            <div class="sale-badge">SALE</div>
+            <div class="card-tag">NEW</div>
             <img src="images/${item.img}" alt="${item.name}">
-            <h4 style="margin:10px 0 0; font-weight:900; font-size:0.8rem; text-transform:uppercase;">${item.name}</h4>
-            <p style="margin:5px 0 0; font-weight:bold; font-size:0.75rem;">₹${item.price}</p>
+            <h4>${item.name}</h4>
+            <p style="font-weight:bold; font-size:0.75rem;">₹${item.price}</p>
         </div>`).join('');
 }
 
-// DASHBOARD SEARCH & SYNC
+// DASHBOARD LOGIC
 function searchOrders() {
-    const term = document.getElementById('dash-search').value.toLowerCase();
-    const filtered = allOrders.filter(o => o.customer.toLowerCase().includes(term) || o.id.includes(term));
-    renderTable(filtered);
+    const term = document.getElementById('dash-search-input').value.toLowerCase();
+    const filtered = allOrders.filter(o => 
+        (o.customer && o.customer.toLowerCase().includes(term)) || 
+        (o.id && o.id.toLowerCase().includes(term))
+    );
+    renderDashboardTable(filtered);
 }
 
 function syncDashboard() {
@@ -44,23 +47,22 @@ function syncDashboard() {
         const data = snap.val();
         if (!data) return;
         allOrders = Object.keys(data).map(key => ({ dbId: key, ...data[key] }));
-        renderTable(allOrders);
+        renderDashboardTable(allOrders);
     });
 }
 
-function renderTable(list) {
+function renderDashboardTable(list) {
     document.getElementById('totalSalesCount').innerText = list.length;
     document.getElementById('totalRevenue').innerText = `₹${list.reduce((s, o) => s + o.total, 0)}`;
     document.getElementById('salesBody').innerHTML = list.map(o => `
         <tr>
             <td>#${o.id}</td>
-            <td>${o.customer}</td>
+            <td><b>${o.customer}</b><br><small>${o.phone}</small></td>
             <td>₹${o.total}</td>
-            <td><i class="fas fa-trash" onclick="deleteOrder('${o.dbId}')"></i></td>
+            <td><i class="fas fa-trash" onclick="deleteOrder('${o.dbId}')" style="color:red; cursor:pointer;"></i></td>
         </tr>`).reverse().join('');
 }
 
-// FIREBASE AUTH
 function handleAuthLogin() {
     const email = document.getElementById('adminEmail').value;
     const pass = document.getElementById('adminPass').value;
@@ -74,22 +76,38 @@ function handleAuthLogin() {
 function sendToWhatsApp() {
     const name = document.getElementById('cust-name').value;
     const phone = document.getElementById('cust-phone').value;
-    if (!name || !phone) return alert("REQUIRED: NAME & PHONE");
+    if (!name || !phone) return alert("NAME & PHONE REQUIRED");
     const total = cart.reduce((s, i) => s + i.price, 0);
-    const orderId = Date.now().toString().slice(-4);
-    database.ref('orders').push({ id: orderId, customer: name, phone: phone, total: total });
-    window.open(`https://wa.me/919547675034?text=ID: ${orderId}%0AName: ${name}%0ATotal: ₹${total}`);
+    const orderId = "ASH" + Date.now().toString().slice(-4);
+    database.ref('orders').push({ id: orderId, customer: name, phone: phone, total: total, items: cart.map(i => i.name).join(', ') });
+    window.open(`https://wa.me/919547675034?text=ORDER ID: ${orderId}%0ANAME: ${name}%0ATOTAL: ₹${total}`);
 }
 
 // TOGGLES
 function toggleSearch() { document.getElementById('search-overlay').classList.toggle('active'); }
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active-l'); }
 function toggleCart() { document.getElementById('cart-panel').classList.toggle('active-r'); }
-function addToCart(id) { 
+function addToCart(id) {
     const item = products.find(p => p.id === id);
     cart.push(item);
-    document.getElementById('cart-total-amt').innerText = `₹${cart.reduce((s, i) => s + i.price, 0)}`;
+    updateCartUI();
     alert("ADDED TO BAG");
 }
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartUI();
+}
+function updateCartUI() {
+    document.getElementById('cart-items-list').innerHTML = cart.map((i, index) => `
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+            <span>${i.name}</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span>₹${i.price}</span>
+                <i class="fas fa-times" onclick="removeFromCart(${index})" style="color:red; cursor:pointer;"></i>
+            </div>
+        </div>`).join('');
+    document.getElementById('cart-total-amt').innerText = `₹${cart.reduce((s, i) => s + i.price, 0)}`;
+}
 function closeModal() { document.querySelectorAll('.modal-root').forEach(m => m.style.display = 'none'); }
+function openLocation() { window.open("https://maps.google.com/?q=Chandpara+Hardware", "_blank"); }
 loadProducts();
