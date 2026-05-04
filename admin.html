@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel — Ashirbad Hardwares</title>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script>
+  firebase.initializeApp({
+    databaseURL: "https://console.firebase.google.com/u/0/project/ashirbad-hardware-7a3d1/database/ashirbad-hardware-7a3d1-default-rtdb/data/~2F"
+  });
+  const db = firebase.database();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--orange:#E85D04;--orange-dark:#C44B00;--orange-light:#FFF3EC;--navy:#0A1628;--navy-light:#1A2A45;--gold:#F4A828;--green:#28A745;--red:#DC3545;--blue:#0D6EFD;--gray-light:#F8F7F4;--gray-mid:#E5E0D8;--gray-text:#6B6560;--text-dark:#1A1410;--shadow:0 2px 16px rgba(10,22,40,.10);--radius:10px;--radius-lg:14px}
