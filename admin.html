@@ -5,9 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Ashirbad Hardwares</title>
 
-<!-- Firebase SDK -->
+<!-- ══════════════════════════════════════
+     FIREBASE — URL HARDCODED — WORKS ON ALL DEVICES
+     No setup needed. Open and login directly.
+══════════════════════════════════════ -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  const FIREBASE_URL = "https://ashirbad-hardware-7a3d1-default-rtdb.firebaseio.com";
+  try {
+    firebase.initializeApp({ databaseURL: FIREBASE_URL });
+    window._db = firebase.database();
+    window._fbOK = true;
+  } catch(e) {
+    window._fbOK = false;
+    console.warn("Firebase init:", e.message);
+  }
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -43,7 +57,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--gl);color:var(--td);min-h
 .topbar{background:var(--nv);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:600;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 .topbar h2{font-family:'Oswald',sans-serif;font-size:15px;color:#fff;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:7px}
 .topbadge{background:var(--or);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px}
-.topright{display:flex;align-items:center;gap:10px}
 .topright a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
 .topright a:hover{color:#fff}
 .hambtn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:2px 6px}
@@ -66,10 +79,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--gl);color:var(--td);min-h
 .drfoot a{color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:6px}
 .drfoot a:hover{color:#fff}
 
-/* CONTENT */
 .content{flex:1;padding:16px;overflow-y:auto}
-
-/* PAGES */
 .pg{display:none}.pg.on{display:block}
 .ph{margin-bottom:16px}
 .ph h1{font-family:'Oswald',sans-serif;font-size:21px;color:var(--nv);text-transform:uppercase;letter-spacing:1px}
@@ -146,6 +156,11 @@ tr:hover td{background:#fafafa}
 .pico{font-size:19px;width:34px;height:34px;background:var(--gl);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pico img{width:100%;height:100%;object-fit:cover;border-radius:6px}
 
+/* NEW ORDER ALERT BANNER */
+.new-order-alert{background:#28A745;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:14px;display:none;align-items:center;gap:10px;animation:pulse-gn 1s infinite}
+.new-order-alert.show{display:flex}
+@keyframes pulse-gn{0%,100%{opacity:1}50%{opacity:.85}}
+
 /* FORM MODAL */
 .fm{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto}
 .fm.on{display:flex}
@@ -162,14 +177,11 @@ tr:hover td{background:#fafafa}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--or)}
 .fg textarea{resize:vertical;min-height:68px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-/* Image preview */
 .imgprev{width:100%;height:100px;border-radius:8px;background:var(--gl);border:2px dashed var(--gm);display:flex;align-items:center;justify-content:center;font-size:40px;margin-top:6px;overflow:hidden;position:relative}
 .imgprev img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-/* Emoji grid */
 .egrid{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-top:6px;max-height:90px;overflow-y:auto}
 .eo{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s}
 .eo:hover{background:var(--gl)}.eo.sel{border-color:var(--or);background:var(--orl)}
-/* Specs */
 .speced{border:1.5px solid var(--gm);border-radius:8px;overflow:hidden}
 .srow{display:flex;border-bottom:1px solid var(--gm)}
 .srow:last-child{border-bottom:none}
@@ -190,17 +202,11 @@ tr:hover td{background:#fafafa}
 .sinput{padding:7px 10px;border:1.5px solid var(--gm);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;min-width:150px;max-width:100%}
 .sinput:focus{border-color:var(--or)}
 
-/* FIREBASE SETUP CARD */
-.fbsetup{background:var(--nv);border-radius:var(--rl);padding:18px;margin-bottom:16px;color:#fff}
-.fbsetup h3{font-family:'Oswald',sans-serif;font-size:15px;color:var(--gd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.fbsetup p{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:8px}
-.fbsetup ol{font-size:12px;color:rgba(255,255,255,.7);line-height:1.8;padding-left:18px;margin-bottom:12px}
-.fbsetup code{background:rgba(255,255,255,.12);padding:2px 7px;border-radius:4px;font-size:12px;font-family:monospace;color:#fff;word-break:break-all}
-.fbinput{width:100%;padding:10px 12px;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:#fff;background:rgba(255,255,255,.08);margin-bottom:10px}
-.fbinput:focus{border-color:var(--or)}
-.fbinput::placeholder{color:rgba(255,255,255,.35)}
-.fbsavebtn{background:var(--or);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s}
-.fbsavebtn:hover{background:var(--or2)}
+/* FB INFO BOX */
+.fbinfo{background:var(--nv);border-radius:var(--rl);padding:16px;margin-bottom:14px;color:#fff}
+.fbinfo h3{font-family:'Oswald',sans-serif;font-size:14px;color:var(--gd);margin-bottom:8px}
+.fbinfo p{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
+.fbinfo code{background:rgba(255,255,255,.12);padding:2px 7px;border-radius:4px;font-size:11px;font-family:monospace;color:var(--gd);word-break:break-all}
 
 /* CONFIRM */
 .cm{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
@@ -211,16 +217,13 @@ tr:hover td{background:#fafafa}
 .cb p{font-size:12px;color:var(--gt);margin-bottom:16px;line-height:1.6}
 .cbtns{display:flex;gap:7px;justify-content:center}
 
-/* TOAST */
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--nv);color:#fff;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:500;z-index:9999;transition:transform .3s;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(0,0,0,.2);white-space:nowrap}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--nv);color:#fff;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:500;z-index:9999;transition:transform .3s;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(0,0,0,.2);white-space:nowrap;max-width:90vw}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-/* DESKTOP */
 @media(min-width:768px){
   #adminWrap.show{display:grid;grid-template-columns:220px 1fr;grid-template-rows:auto 1fr}
   .topbar{grid-column:1/-1;grid-row:1}
-  .drawer{position:sticky;left:0;top:0;height:calc(100vh - 48px);box-shadow:none;grid-column:1;grid-row:2}
-  .drawer.open,.drawer{left:0!important}
+  .drawer{position:sticky;left:0;top:0;height:calc(100vh - 48px);box-shadow:none;grid-column:1;grid-row:2;left:0!important}
   .hambtn{display:none}
   .drovl{display:none!important}
   .content{grid-column:2;grid-row:2;padding:22px}
@@ -232,7 +235,6 @@ tr:hover td{background:#fafafa}
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="lbox">
     <div class="lico">🔧</div>
@@ -241,30 +243,21 @@ tr:hover td{background:#fafafa}
     <input type="password" id="pwIn" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="lbtn" onclick="doLogin()">🔐 Login</button>
     <div class="lerr" id="lerr"></div>
-    <div class="lhint">Default password: <strong>dilip2025</strong></div>
+    <div class="lhint">Password: <strong>dilip2025</strong></div>
   </div>
 </div>
 
-<!-- ADMIN WRAP -->
 <div id="adminWrap">
-  <!-- TOP BAR -->
   <div class="topbar">
     <button class="hambtn" onclick="openDrawer()">☰</button>
     <h2>🔧 Ashirbad <span class="topbadge">Admin</span></h2>
-    <div class="topright">
-      <a href="index.html">← Store</a>
-    </div>
+    <div class="topright"><a href="index.html">← Store</a></div>
   </div>
 
-  <!-- DRAWER OVERLAY -->
   <div class="drovl" id="drovl" onclick="closeDrawer()"></div>
 
-  <!-- DRAWER / SIDEBAR -->
   <div class="drawer" id="drawer">
-    <div class="drlogo">
-      <h3>🔧 Ashirbad Admin</h3>
-      <p>চাঁদপাড়া বাজার</p>
-    </div>
+    <div class="drlogo"><h3>🔧 Ashirbad Admin</h3><p>চাঁদপাড়া বাজার</p></div>
     <div class="drnav">
       <span class="nlab">Overview</span>
       <a class="ni on" onclick="go('dashboard',this)" href="#"><span class="ic">📊</span> Dashboard</a>
@@ -278,16 +271,13 @@ tr:hover td{background:#fafafa}
     <div class="drfoot"><a href="index.html">← Back to Store</a></div>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
 
     <!-- DASHBOARD -->
     <div class="pg on" id="pg-dashboard">
-      <div class="ph"><h1>Dashboard</h1><p>Real-time store overview</p></div>
-      <div class="fbstatus disconnected" id="fbStatus">
-        <div class="dot"></div>
-        <span id="fbStatusTxt">Not connected to Firebase — changes save locally only</span>
-      </div>
+      <div class="ph"><h1>Dashboard</h1><p>Real-time store overview — auto-updates from all devices</p></div>
+      <div class="fbstatus disconnected" id="fbStatus"><div class="dot"></div><span id="fbStatusTxt">Connecting to Firebase...</span></div>
+      <div class="new-order-alert" id="newOrderAlert">🛒 New order received! Go to Orders to view it.</div>
       <div class="sg">
         <div class="sc c1"><div class="si">💰</div><div class="sn" id="d-rev">₹0</div><div class="sl">Total Revenue</div><div class="ss up" id="d-rsub"></div></div>
         <div class="sc c2"><div class="si">🛒</div><div class="sn" id="d-ord">0</div><div class="sl">Total Orders</div><div class="ss warn" id="d-osub"></div></div>
@@ -303,7 +293,7 @@ tr:hover td{background:#fafafa}
 
     <!-- PRODUCTS -->
     <div class="pg" id="pg-products">
-      <div class="ph"><h1>Products</h1><p>Add, edit, remove. Changes sync to store in real-time.</p></div>
+      <div class="ph"><h1>Products</h1><p>Changes sync instantly to the store on all devices.</p></div>
       <div class="tb">
         <div class="tbs"><span class="si">🔍</span><input type="text" id="psrch" placeholder="Search..." oninput="renderProds()"></div>
         <select class="tsel" id="pcatf" onchange="renderProds()"><option value="">All Categories</option><option value="electrical">Electrical</option><option value="plumbing">Plumbing</option><option value="tools">Tools</option><option value="paint">Paint</option><option value="fasteners">Fasteners</option></select>
@@ -319,7 +309,7 @@ tr:hover td{background:#fafafa}
 
     <!-- ORDERS -->
     <div class="pg" id="pg-orders">
-      <div class="ph"><h1>Orders</h1><p>Manage orders — new orders appear here in real-time from Firebase.</p></div>
+      <div class="ph"><h1>Orders</h1><p>New orders from customers appear here in real-time automatically.</p></div>
       <div class="tb">
         <select class="tsel" id="osf" onchange="renderOrds()"><option value="">All Orders</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select>
         <button class="btn bo" onclick="openAddO()">+ Add Order</button>
@@ -341,23 +331,10 @@ tr:hover td{background:#fafafa}
     <!-- SETTINGS -->
     <div class="pg" id="pg-settings">
       <div class="ph"><h1>Settings</h1></div>
-
-      <!-- FIREBASE SETUP -->
-      <div class="fbsetup">
-        <h3>🔥 Firebase Real-Time Setup</h3>
-        <p>Connect Firebase to sync orders, products & reviews across all devices in real-time.</p>
-        <ol>
-          <li>Go to <strong>firebase.google.com</strong> → Create project named <strong>ashirbad-hardwares</strong></li>
-          <li>Click <strong>Build → Realtime Database → Create Database → Start in test mode</strong></li>
-          <li>Copy your database URL (looks like: <code>https://ashirbad-hardwares-default-rtdb.firebaseio.com</code>)</li>
-          <li>Paste it below and click Save</li>
-        </ol>
-        <input class="fbinput" type="text" id="fbUrlInput" placeholder="https://your-project-default-rtdb.firebaseio.com">
-        <br>
-        <button class="fbsavebtn" onclick="saveFirebaseUrl()">🔥 Save & Connect Firebase</button>
-        <p style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.5)">Current: <span id="fbUrlDisplay">Not set</span></p>
+      <div class="fbinfo">
+        <h3>🔥 Firebase — Already Connected!</h3>
+        <p>Your Firebase URL is hardcoded in both files:<br><code>ashirbad-hardware-7a3d1-default-rtdb.firebaseio.com</code><br><br>✅ No setup needed. Works on all devices automatically.</p>
       </div>
-
       <div class="scard">
         <h3>🔐 Security</h3>
         <div class="srow2">
@@ -371,20 +348,20 @@ tr:hover td{background:#fafafa}
       <div class="scard">
         <h3>🏪 Store Info</h3>
         <div class="srow2"><div class="sinfo"><h4>WhatsApp Number</h4><p>Receives orders</p></div><input class="sinput" type="text" id="waNum" value="919547675034"></div>
-        <div class="srow2"><div class="sinfo"><h4>Min Delivery Amount (₹)</h4><p>Below this → pickup only</p></div><input class="sinput" type="number" id="minOrd" value="500"></div>
-        <div class="srow2"><div class="sinfo"><h4>Delivery Days</h4><p>When home delivery happens</p></div><input class="sinput" type="text" id="delDays" value="Saturday & Sunday"></div>
-        <div style="text-align:right;margin-top:10px"><button class="btn bo" onclick="toast('✅ Settings saved!')">💾 Save Settings</button></div>
+        <div class="srow2"><div class="sinfo"><h4>Min Delivery Amount (₹)</h4></div><input class="sinput" type="number" id="minOrd" value="500"></div>
+        <div class="srow2"><div class="sinfo"><h4>Delivery Days</h4></div><input class="sinput" type="text" id="delDays" value="Saturday & Sunday"></div>
+        <div style="text-align:right;margin-top:10px"><button class="btn bo" onclick="toast('✅ Settings saved!')">💾 Save</button></div>
       </div>
       <div class="scard">
         <h3>📊 Data</h3>
-        <div class="srow2"><div class="sinfo"><h4>Export All Data</h4><p>Download products, orders & reviews</p></div><button class="btn bn bsm" onclick="exportAll()">📥 Export</button></div>
-        <div class="srow2"><div class="sinfo"><h4>Clear All Orders</h4></div><button class="btn br bsm" onclick="conf('🗑️','Clear All Orders?','All orders will be deleted forever.',clrAllOrds)">🗑 Clear</button></div>
-        <div class="srow2"><div class="sinfo"><h4>Reset Products to Default</h4></div><button class="btn bg2 bsm" onclick="doReset()">🔄 Reset</button></div>
+        <div class="srow2"><div class="sinfo"><h4>Export All Data</h4></div><button class="btn bn bsm" onclick="exportAll()">📥 Export</button></div>
+        <div class="srow2"><div class="sinfo"><h4>Clear All Orders</h4></div><button class="btn br bsm" onclick="conf('🗑️','Clear All Orders?','All orders deleted forever.',clrAllOrds)">🗑 Clear</button></div>
+        <div class="srow2"><div class="sinfo"><h4>Reset Products</h4></div><button class="btn bg2 bsm" onclick="doReset()">🔄 Reset</button></div>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /adminWrap -->
+  </div>
+</div>
 
 <!-- PRODUCT MODAL -->
 <div class="fm" id="prodFm">
@@ -402,7 +379,7 @@ tr:hover td{background:#fafafa}
       </div>
       <div class="frow">
         <div class="fg"><label>Price (₹) *</label><input type="number" id="pf-price" placeholder="150" min="0"></div>
-        <div class="fg"><label>Old Price (₹)</label><input type="number" id="pf-old" placeholder="No discount? Leave blank" min="0"></div>
+        <div class="fg"><label>Old Price (₹)</label><input type="number" id="pf-old" placeholder="Leave blank if no discount" min="0"></div>
       </div>
       <div class="frow">
         <div class="fg"><label>Rating (1–5)</label><input type="number" id="pf-rating" min="1" max="5" value="5"></div>
@@ -411,9 +388,9 @@ tr:hover td{background:#fafafa}
       <div class="fg"><label>Description</label><textarea id="pf-desc" placeholder="Short product description..."></textarea></div>
       <div class="fg">
         <label>Product Image URL</label>
-        <input type="text" id="pf-img" placeholder="Paste image URL (from imgbb.com) or leave blank" oninput="prevImg()">
+        <input type="text" id="pf-img" placeholder="Paste image URL from imgbb.com or leave blank" oninput="prevImg()">
         <div class="imgprev" id="imgprev"><span id="prevEmoji">📦</span></div>
-        <small style="color:var(--gt);font-size:10px;margin-top:3px;display:block">💡 Upload photo to imgbb.com → copy "Direct link" → paste above</small>
+        <small style="color:var(--gt);font-size:10px;margin-top:3px;display:block">💡 Upload photo to imgbb.com → copy Direct link → paste above</small>
       </div>
       <div class="fg">
         <label>Icon / Emoji (if no image)</label>
@@ -476,180 +453,168 @@ tr:hover td{background:#fafafa}
   </div>
 </div>
 
-<!-- CONFIRM -->
 <div class="cm" id="cm">
   <div class="cb">
-    <div class="ci" id="ci">⚠️</div>
-    <h3 id="ctit">Are you sure?</h3>
-    <p id="cmsg">This cannot be undone.</p>
-    <div class="cbtns">
-      <button class="btn bg2 bsm" onclick="closeConf()">Cancel</button>
-      <button class="btn br bsm" id="cok">Yes, Delete</button>
-    </div>
+    <div class="ci" id="ci">⚠️</div><h3 id="ctit">Are you sure?</h3><p id="cmsg">This cannot be undone.</p>
+    <div class="cbtns"><button class="btn bg2 bsm" onclick="closeConf()">Cancel</button><button class="btn br bsm" id="cok">Yes, Delete</button></div>
   </div>
 </div>
 
 <div class="toast" id="toastEl"></div>
 
 <script>
-/* ════════════════════════════════════════════
-   KEYS & CONSTANTS
-════════════════════════════════════════════ */
-const SK='ashirbad_products', OK='ashirbad_orders', RK='ashirbad_reviews';
-const PK='ashirbad_pw', FK='ashirbad_firebase_url';
-
+/* ══════════════════════════════════════════
+   FIREBASE ALREADY INITIALIZED IN <head>
+   window._db = database, window._fbOK = bool
+══════════════════════════════════════════ */
+const SK='ashirbad_products', OK='ashirbad_orders', RK='ashirbad_reviews', PK='ashirbad_pw';
 const EMLIST=['💡','⚡','🔌','🔆','🚿','🔧','🚰','🔄','🔨','🪛','📏','🔩','🎨','🖌️','📌','🏗️','🪚','🔑','🪜','🧰','🛠️','⚙️','🧲','🪣','🪟','🚪','🧱','🔐','📦','🪤'];
+let USE_FB = window._fbOK || false;
+let db = window._db || null;
+let prevOrderCount = 0;
 
-/* ════════════════════════════════════════════
-   DEFAULT DATA
-════════════════════════════════════════════ */
 const DP=[
   {id:1,name:'LED Bulb 9W',nameBn:'এলইডি বাল্ব ৯ ওয়াট',cat:'electrical',price:85,oldPrice:120,icon:'💡',img:'',badge:'Sale',inStock:true,rating:5,desc:'Energy-saving 9W LED bulb.',specs:[['Wattage','9W'],['Type','LED'],['Color','Cool White'],['Life','25,000 hrs']]},
-  {id:2,name:'MCB Switch 32A',nameBn:'MCB সুইচ ৩২A',cat:'electrical',price:220,oldPrice:null,icon:'⚡',img:'',badge:null,inStock:true,rating:5,desc:'32A circuit breaker for home boards.',specs:[['Rating','32A'],['Brand','L&T']]},
-  {id:3,name:'Wire 1.5mm (per m)',nameBn:'তার ১.৫ মিমি',cat:'electrical',price:18,oldPrice:null,icon:'🔌',img:'',badge:null,inStock:true,rating:4,desc:'ISI copper wire.',specs:[['Size','1.5mm²'],['Standard','ISI']]},
+  {id:2,name:'MCB Switch 32A',nameBn:'MCB সুইচ ৩২A',cat:'electrical',price:220,oldPrice:null,icon:'⚡',img:'',badge:null,inStock:true,rating:5,desc:'32A circuit breaker.',specs:[['Rating','32A'],['Brand','L&T']]},
+  {id:3,name:'Wire 1.5mm (per m)',nameBn:'তার ১.৫ মিমি',cat:'electrical',price:18,oldPrice:null,icon:'🔌',img:'',badge:null,inStock:true,rating:4,desc:'ISI copper wire.',specs:[['Size','1.5mm²']]},
   {id:4,name:'Modular Switch Plate',nameBn:'মডুলার সুইচ প্লেট',cat:'electrical',price:150,oldPrice:200,icon:'🔆',img:'',badge:'Sale',inStock:true,rating:4,desc:'6-module switch plate.',specs:[['Modules','6'],['Brand','Anchor']]},
-  {id:5,name:'CPVC Pipe 1 inch',nameBn:'CPVC পাইপ ১ ইঞ্চি',cat:'plumbing',price:95,oldPrice:null,icon:'🚿',img:'',badge:null,inStock:true,rating:5,desc:'CPVC pipe for hot & cold water.',specs:[['Size','1 inch'],['Length','3m']]},
-  {id:6,name:'Ball Valve 3/4 inch',nameBn:'বল ভাল্ব ৩/৪ ইঞ্চি',cat:'plumbing',price:180,oldPrice:null,icon:'🔧',img:'',badge:null,inStock:false,rating:4,desc:'Brass ball valve.',specs:[['Size','3/4 inch'],['Material','Brass']]},
+  {id:5,name:'CPVC Pipe 1 inch',nameBn:'CPVC পাইপ ১ ইঞ্চি',cat:'plumbing',price:95,oldPrice:null,icon:'🚿',img:'',badge:null,inStock:true,rating:5,desc:'CPVC pipe.',specs:[['Size','1 inch'],['Length','3m']]},
+  {id:6,name:'Ball Valve 3/4 inch',nameBn:'বল ভাল্ব ৩/৪ ইঞ্চি',cat:'plumbing',price:180,oldPrice:null,icon:'🔧',img:'',badge:null,inStock:false,rating:4,desc:'Brass ball valve.',specs:[['Size','3/4 inch']]},
   {id:7,name:'Tap Connector Set',nameBn:'ট্যাপ কানেক্টর সেট',cat:'plumbing',price:130,oldPrice:160,icon:'🚰',img:'',badge:'Sale',inStock:true,rating:5,desc:'Flexible tap connectors.',specs:[['Set','2 pieces']]},
-  {id:8,name:'PVC Elbow 1 inch',nameBn:'PVC এলবো ১ ইঞ্চি',cat:'plumbing',price:25,oldPrice:null,icon:'🔄',img:'',badge:null,inStock:true,rating:4,desc:'90-degree PVC elbow.',specs:[['Size','1 inch'],['Angle','90°']]},
-  {id:9,name:'Hammer 500g',nameBn:'হাতুড়ি ৫০০ গ্রাম',cat:'tools',price:280,oldPrice:350,icon:'🔨',img:'',badge:'Sale',inStock:true,rating:5,desc:'500g claw hammer.',specs:[['Weight','500g'],['Type','Claw']]},
-  {id:10,name:'Screwdriver Set 6pc',nameBn:'স্ক্রু ড্রাইভার সেট',cat:'tools',price:350,oldPrice:null,icon:'🪛',img:'',badge:'New',inStock:true,rating:5,desc:'6-piece Phillips & flat.',specs:[['Pieces','6'],['Steel','CrV']]},
-  {id:11,name:'Measuring Tape 5m',nameBn:'মাপার ফিতা ৫ মিটার',cat:'tools',price:120,oldPrice:null,icon:'📏',img:'',badge:null,inStock:true,rating:4,desc:'5m tape with auto-lock.',specs:[['Length','5m']]},
-  {id:12,name:'Hand Drill Machine',nameBn:'হ্যান্ড ড্রিল মেশিন',cat:'tools',price:650,oldPrice:800,icon:'🔩',img:'',badge:'Sale',inStock:true,rating:5,desc:'500W drill.',specs:[['Power','500W'],['Chuck','13mm']]},
+  {id:8,name:'PVC Elbow 1 inch',nameBn:'PVC এলবো ১ ইঞ্চি',cat:'plumbing',price:25,oldPrice:null,icon:'🔄',img:'',badge:null,inStock:true,rating:4,desc:'90-degree PVC elbow.',specs:[['Size','1 inch']]},
+  {id:9,name:'Hammer 500g',nameBn:'হাতুড়ি ৫০০ গ্রাম',cat:'tools',price:280,oldPrice:350,icon:'🔨',img:'',badge:'Sale',inStock:true,rating:5,desc:'500g claw hammer.',specs:[['Weight','500g']]},
+  {id:10,name:'Screwdriver Set 6pc',nameBn:'স্ক্রু ড্রাইভার সেট',cat:'tools',price:350,oldPrice:null,icon:'🪛',img:'',badge:'New',inStock:true,rating:5,desc:'6-piece set.',specs:[['Pieces','6']]},
+  {id:11,name:'Measuring Tape 5m',nameBn:'মাপার ফিতা ৫ মিটার',cat:'tools',price:120,oldPrice:null,icon:'📏',img:'',badge:null,inStock:true,rating:4,desc:'5m steel tape.',specs:[['Length','5m']]},
+  {id:12,name:'Hand Drill Machine',nameBn:'হ্যান্ড ড্রিল মেশিন',cat:'tools',price:650,oldPrice:800,icon:'🔩',img:'',badge:'Sale',inStock:true,rating:5,desc:'500W drill.',specs:[['Power','500W']]},
   {id:13,name:'Wall Putty 5kg',nameBn:'ওয়াল পাটি ৫ কেজি',cat:'paint',price:320,oldPrice:null,icon:'🎨',img:'',badge:null,inStock:true,rating:4,desc:'White cement putty.',specs:[['Weight','5 kg']]},
   {id:14,name:'Primer 1 Litre',nameBn:'প্রাইমার ১ লিটার',cat:'paint',price:290,oldPrice:320,icon:'🖌️',img:'',badge:null,inStock:false,rating:4,desc:'Water-based primer.',specs:[['Volume','1 Litre']]},
-  {id:15,name:'Nut & Bolt Set M6',nameBn:'নাট বোল্ট সেট M6',cat:'fasteners',price:60,oldPrice:null,icon:'🔩',img:'',badge:null,inStock:true,rating:4,desc:'20 pairs SS nut & bolt.',specs:[['Size','M6'],['Material','SS 304']]},
+  {id:15,name:'Nut & Bolt Set M6',nameBn:'নাট বোল্ট সেট M6',cat:'fasteners',price:60,oldPrice:null,icon:'🔩',img:'',badge:null,inStock:true,rating:4,desc:'20 pairs SS.',specs:[['Size','M6']]},
   {id:16,name:'Wall Plug Anchors 50pc',nameBn:'ওয়াল প্লাগ ৫০ পিস',cat:'fasteners',price:45,oldPrice:null,icon:'📌',img:'',badge:'New',inStock:true,rating:5,desc:'Nylon wall plugs.',specs:[['Count','50 pieces']]},
 ];
 const DR=[
   {id:1,name:'Rahul Sen',loc:'Chandpara',stars:5,text:'Excellent quality at reasonable prices!',textBn:'দামও ভালো, মালও ভালো।',date:'April 2025',verified:true,color:'#E85D04'},
   {id:2,name:'Priya Mondal',loc:'Chandpara Bazar',stars:5,text:'Got delivery on Sunday — very smooth!',textBn:'হোম ডেলিভারি খুব ভালো সার্ভিস।',date:'March 2025',verified:true,color:'#0A1628'},
-  {id:3,name:'Suresh Kumar',loc:'Chandpara',stars:4,text:'Best hardware shop in Chandpara. 10 years customer!',textBn:'চাঁদপাড়ার সেরা হার্ডওয়্যার দোকান।',date:'March 2025',verified:true,color:'#1D9E75'},
-];
-const DO=[
-  {id:1,customer:'Rahul Sen',phone:'9876543210',items:'LED Bulb × 3',total:255,delivery:'Home Delivery',address:'Chandpara',status:'delivered',date:'2025-04-28',note:''},
-  {id:2,customer:'Priya Mondal',phone:'9123456789',items:'Hammer × 1',total:280,delivery:'Home Delivery',address:'Chandpara Bazar',status:'delivered',date:'2025-04-27',note:''},
-  {id:3,customer:'Anita Das',phone:'9765432100',items:'Wall Putty × 2',total:640,delivery:'Home Delivery',address:'Near school',status:'pending',date:'2025-05-01',note:'Weekend delivery'},
-  {id:4,customer:'Bikash Roy',phone:'9654321098',items:'Switch Plate × 2',total:300,delivery:'Shop Pickup',address:'',status:'processing',date:'2025-05-01',note:''},
+  {id:3,name:'Suresh Kumar',loc:'Chandpara',stars:4,text:'Best hardware shop. 10 years customer!',textBn:'চাঁদপাড়ার সেরা হার্ডওয়্যার দোকান।',date:'March 2025',verified:true,color:'#1D9E75'},
 ];
 
-/* ════════════════════════════════════════════
-   FIREBASE
-════════════════════════════════════════════ */
-let db = null;
-let USE_FB = false;
-
-function getStoredFbUrl(){return localStorage.getItem(FK)||''}
-
-function initFirebase(url){
-  if(!url || url.trim()==='') return;
-  try {
-    // Try to get existing app or create new
-    let app;
-    try { app = firebase.app(); } catch(e) { app = null; }
-    if(!app){
-      firebase.initializeApp({ databaseURL: url.trim() });
-    }
-    db = firebase.database();
-    USE_FB = true;
-    // Test connection
-    db.ref('.info/connected').on('value', snap => {
-      const connected = snap.val() === true;
-      const st = document.getElementById('fbStatus');
-      const stxt = document.getElementById('fbStatusTxt');
-      if(st && stxt){
-        st.className = 'fbstatus ' + (connected ? 'connected' : 'disconnected');
-        stxt.textContent = connected
-          ? '🔥 Connected to Firebase — real-time sync active!'
-          : '⚠️ Firebase URL set but not connected. Check your URL.';
-      }
-    });
-    startFbListeners();
-    toast('🔥 Firebase connected!');
-  } catch(e) {
-    console.error('Firebase error:', e);
-    toast('⚠️ Firebase error: '+e.message);
-  }
-}
-
-function startFbListeners(){
-  if(!db) return;
-  // Listen for order changes (real-time)
-  db.ref('orders').on('value', snap => {
-    if(snap.val()){
-      const raw = snap.val();
-      // Firebase push() creates objects, convert to array
-      const arr = typeof raw === 'object' && !Array.isArray(raw)
-        ? Object.entries(raw).map(([k,v])=>({...v, fbKey:k}))
-        : (Array.isArray(raw) ? raw : []);
-      if(arr.length){
-        localStorage.setItem(OK, JSON.stringify(arr));
-        renderOrds(); renderDash(); updBadges();
-      }
-    }
-  });
-  // Listen for product changes (real-time)
-  db.ref('products').on('value', snap => {
-    if(snap.val()){
-      const d = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val());
-      localStorage.setItem(SK, JSON.stringify(d));
-      renderProds(); renderDash();
-    }
-  });
-  // Listen for review changes (real-time)
-  db.ref('reviews').on('value', snap => {
-    if(snap.val()){
-      const d = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val());
-      localStorage.setItem(RK, JSON.stringify(d));
-      renderRevs(); renderDash(); updBadges();
-    }
-  });
-}
-
-function saveFirebaseUrl(){
-  const url = document.getElementById('fbUrlInput').value.trim();
-  if(!url){toast('⚠️ Please paste your Firebase URL');return}
-  localStorage.setItem(FK, url);
-  document.getElementById('fbUrlDisplay').textContent = url;
-  initFirebase(url);
-}
-
-/* ════════════════════════════════════════════
-   DATA HELPERS
-════════════════════════════════════════════ */
+/* ── DATA ── */
 function gP(){try{const s=localStorage.getItem(SK);return s?JSON.parse(s):JSON.parse(JSON.stringify(DP))}catch{return JSON.parse(JSON.stringify(DP))}}
-function gO(){try{const s=localStorage.getItem(OK);return s?JSON.parse(s):JSON.parse(JSON.stringify(DO))}catch{return JSON.parse(JSON.stringify(DO))}}
+function gO(){try{const s=localStorage.getItem(OK);return s?JSON.parse(s):[]}catch{return[]}}
 function gR(){try{const s=localStorage.getItem(RK);return s?JSON.parse(s):JSON.parse(JSON.stringify(DR))}catch{return JSON.parse(JSON.stringify(DR))}}
 function getPw(){return localStorage.getItem(PK)||'dilip2025'}
 
 function saveProds(d){
   localStorage.setItem(SK,JSON.stringify(d));
-  if(USE_FB && db){ try{ db.ref('products').set(d) }catch(e){} }
+  if(USE_FB&&db){try{db.ref('products').set(d)}catch(e){}}
 }
 function saveOrds(d){
   localStorage.setItem(OK,JSON.stringify(d));
-  if(USE_FB && db){ try{ db.ref('orders').set(d) }catch(e){} }
+  if(USE_FB&&db){try{db.ref('orders').set(d)}catch(e){}}
 }
 function saveRevs(d){
   localStorage.setItem(RK,JSON.stringify(d));
-  if(USE_FB && db){ try{ db.ref('reviews').set(d) }catch(e){} }
-}
-// Special: push single new order to Firebase (so it gets a unique key)
-function pushOrder(o){
-  localStorage.setItem(OK, JSON.stringify([...gO(), o]));
-  if(USE_FB && db){ try{ db.ref('orders').push(o) }catch(e){} }
-  else { saveOrds([...gO()]); }
+  if(USE_FB&&db){try{db.ref('reviews').set(d)}catch(e){}}
 }
 
+/* ══════════════════════════════════════════
+   FIREBASE REAL-TIME LISTENERS
+   This is what makes everything sync across
+   ALL phones and laptops automatically
+══════════════════════════════════════════ */
+function startFbListeners(){
+  if(!db)return;
+
+  // Connection status indicator
+  db.ref('.info/connected').on('value', snap=>{
+    const ok=snap.val()===true;
+    const st=document.getElementById('fbStatus');
+    const stxt=document.getElementById('fbStatusTxt');
+    if(st&&stxt){
+      st.className='fbstatus '+(ok?'connected':'disconnected');
+      stxt.textContent=ok
+        ?'🔥 Connected — changes sync to all devices instantly!'
+        :'⏳ Connecting to Firebase...';
+    }
+  });
+
+  // ORDERS — when a customer places order from index.html,
+  // it appears here automatically on ALL admin devices
+  db.ref('orders').on('value', snap=>{
+    try{
+      const val=snap.val();
+      if(val){
+        const arr=typeof val==='object'&&!Array.isArray(val)
+          ?Object.entries(val).map(([k,v])=>({...v,fbKey:k}))
+          :(Array.isArray(val)?val:[]);
+        if(arr.length){
+          // New order alert
+          if(prevOrderCount>0&&arr.length>prevOrderCount){
+            const alert=document.getElementById('newOrderAlert');
+            if(alert){alert.classList.add('show');setTimeout(()=>alert.classList.remove('show'),8000)}
+            try{
+              const ctx=new AudioContext();
+              const osc=ctx.createOscillator();
+              const gain=ctx.createGain();
+              osc.connect(gain);gain.connect(ctx.destination);
+              osc.frequency.setValueAtTime(880,ctx.currentTime);
+              osc.frequency.setValueAtTime(1100,ctx.currentTime+0.1);
+              gain.gain.setValueAtTime(0.3,ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.4);
+              osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.4);
+            }catch(e){}
+          }
+          prevOrderCount=arr.length;
+          localStorage.setItem(OK,JSON.stringify(arr));
+          renderOrds();renderDash();updBadges();
+        }
+      } else {
+        prevOrderCount=0;
+      }
+    }catch(e){}
+  });
+
+  // PRODUCTS — when admin changes products, all store pages update
+  db.ref('products').on('value', snap=>{
+    try{
+      const val=snap.val();
+      if(val){
+        const arr=Array.isArray(val)?val:Object.values(val);
+        if(arr.length){
+          localStorage.setItem(SK,JSON.stringify(arr));
+          renderProds();renderDash();
+        }
+      } else {
+        // Push defaults to Firebase if empty
+        db.ref('products').set(JSON.parse(JSON.stringify(DP)));
+      }
+    }catch(e){}
+  });
+
+  // REVIEWS — sync reviews across all devices
+  db.ref('reviews').on('value', snap=>{
+    try{
+      const val=snap.val();
+      if(val){
+        const arr=Array.isArray(val)?val:Object.values(val);
+        if(arr.length){
+          localStorage.setItem(RK,JSON.stringify(arr));
+          renderRevs();renderDash();updBadges();
+        }
+      } else {
+        db.ref('reviews').set(JSON.parse(JSON.stringify(DR)));
+      }
+    }catch(e){}
+  });
+}
+
+/* ── DOM HELPERS ── */
 function v(id){return document.getElementById(id)}
 function sv(id,val){v(id).value=val}
 function gv(id){return v(id).value.trim()}
 
-/* ════════════════════════════════════════════
-   LOGIN
-════════════════════════════════════════════ */
+/* ── LOGIN ── */
 function doLogin(){
-  if(v('pwIn').value === getPw()){
+  if(v('pwIn').value===getPw()){
     v('loginScreen').style.display='none';
     v('adminWrap').classList.add('show');
     init();
@@ -661,142 +626,103 @@ function doLogin(){
 }
 v('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 
-/* ════════════════════════════════════════════
-   INIT
-════════════════════════════════════════════ */
+/* ── INIT ── */
 function init(){
   buildEGrid();
-  renderDash();
-  renderProds();
-  renderOrds();
-  renderRevs();
-  updBadges();
-
-  // Load and try Firebase if URL stored
-  const storedUrl = getStoredFbUrl();
-  if(storedUrl){
-    v('fbUrlInput').value = storedUrl;
-    v('fbUrlDisplay').textContent = storedUrl;
-    initFirebase(storedUrl);
+  // Start Firebase listeners first — they will auto-populate data
+  if(USE_FB&&db){
+    startFbListeners();
+  } else {
+    // No Firebase — use local data
+    renderDash();renderProds();renderOrds();renderRevs();updBadges();
   }
 }
 
-/* ════════════════════════════════════════════
-   DRAWER / NAVIGATION
-════════════════════════════════════════════ */
+/* ── DRAWER ── */
 function openDrawer(){v('drawer').classList.add('open');v('drovl').classList.add('show')}
 function closeDrawer(){v('drawer').classList.remove('open');v('drovl').classList.remove('show')}
-function go(name, el){
+function go(name,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   v('pg-'+name).classList.add('on');
-  if(el) el.classList.add('on');
+  if(el)el.classList.add('on');
   closeDrawer();
-  if(name==='dashboard') renderDash();
-  if(name==='orders') renderOrds();
-  if(name==='reviews') renderRevs();
+  if(name==='dashboard')renderDash();
+  if(name==='orders')renderOrds();
+  if(name==='reviews')renderRevs();
 }
 
-/* ════════════════════════════════════════════
-   DASHBOARD
-════════════════════════════════════════════ */
+/* ── DASHBOARD ── */
 function renderDash(){
-  const prods=gP(), ords=gO(), revs=gR();
-  const deliv=ords.filter(o=>o.status==='delivered');
-  const rev=deliv.reduce((s,o)=>s+Number(o.total),0);
+  const prods=gP(),ords=gO(),revs=gR();
+  const del=ords.filter(o=>o.status==='delivered');
+  const rev=del.reduce((s,o)=>s+Number(o.total),0);
   const pend=ords.filter(o=>o.status==='pending').length;
   const oos=prods.filter(p=>!p.inStock).length;
   const avg=revs.length?(revs.reduce((s,r)=>s+r.stars,0)/revs.length).toFixed(1):4.8;
-
   v('d-rev').textContent='₹'+rev.toLocaleString('en-IN');
-  v('d-rsub').textContent='From '+deliv.length+' delivered orders';
+  v('d-rsub').textContent='From '+del.length+' delivered orders';
   v('d-ord').textContent=ords.length;
   v('d-osub').textContent=pend+' pending';
   v('d-prod').textContent=prods.length;
   v('d-oos').textContent=oos+' out of stock';
   v('d-rat').textContent=avg;
   v('d-ratsub').textContent=revs.length+' reviews';
-
-  // Chart
   const months=['Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
   const vals=[8200,9400,11200,7800,10500,13400,Math.max(rev,6800)];
   const mx=Math.max(...vals);
-  v('chart').innerHTML=vals.map((n,i)=>`<div class="bc"><div class="bb" style="height:${Math.round(n/mx*100)}%"><div class="btt">₹${n.toLocaleString()}</div></div></div>`).join('');
+  v('chart').innerHTML=vals.map(n=>`<div class="bc"><div class="bb" style="height:${Math.round(n/mx*100)}%"><div class="btt">₹${n.toLocaleString()}</div></div></div>`).join('');
   v('clbls').innerHTML=months.map(m=>`<span style="flex:1;text-align:center;font-size:8px;color:var(--gt)">${m}</span>`).join('');
-
-  // Category
   const cols={electrical:'#E85D04',plumbing:'#0D6EFD',tools:'#28A745',paint:'#F4A828',fasteners:'#6f42c1'};
   const cnt={};prods.forEach(p=>{cnt[p.cat]=(cnt[p.cat]||0)+1});
   v('catb').innerHTML=Object.entries(cnt).map(([c,n])=>`
-    <div class="crow">
-      <div class="cdot" style="background:${cols[c]||'#999'}"></div>
-      <div class="cname">${c.charAt(0).toUpperCase()+c.slice(1)}</div>
-      <div class="cbg"><div class="cfill" style="width:${Math.round(n/prods.length*100)}%;background:${cols[c]||'#999'}"></div></div>
-      <div class="cpct">${Math.round(n/prods.length*100)}%</div>
-    </div>`).join('');
-
-  // Recent orders
+    <div class="crow"><div class="cdot" style="background:${cols[c]||'#999'}"></div><div class="cname">${c.charAt(0).toUpperCase()+c.slice(1)}</div>
+    <div class="cbg"><div class="cfill" style="width:${Math.round(n/prods.length*100)}%;background:${cols[c]||'#999'}"></div></div>
+    <div class="cpct">${Math.round(n/prods.length*100)}%</div></div>`).join('');
   const recent=[...ords].reverse().slice(0,5);
-  v('recentTb').innerHTML=recent.length ? recent.map(o=>`
-    <tr><td><b>#${o.id||'—'}</b></td><td>${o.customer}</td><td><b>₹${o.total}</b></td><td style="font-size:10px">${o.delivery}</td><td><span class="sbadge ${o.status}">${o.status}</span></td><td style="font-size:10px;color:var(--gt)">${o.date}</td></tr>`)
-    .join('') : '<tr><td colspan="6" style="text-align:center;color:var(--gt);padding:18px">No orders yet</td></tr>';
+  v('recentTb').innerHTML=recent.length?recent.map(o=>`<tr><td><b>#${o.id||'—'}</b></td><td>${o.customer}</td><td><b>₹${o.total}</b></td><td style="font-size:10px">${o.delivery}</td><td><span class="sbadge ${o.status}">${o.status}</span></td><td style="font-size:10px;color:var(--gt)">${o.date}</td></tr>`).join('')
+    :'<tr><td colspan="6" style="text-align:center;color:var(--gt);padding:18px">No orders yet. Orders placed on the store will appear here.</td></tr>';
 }
 
 function updBadges(){
   const pend=gO().filter(o=>o.status==='pending').length;
-  v('pb').textContent=pend; v('pb').style.display=pend?'':'none';
+  v('pb').textContent=pend;v('pb').style.display=pend?'':'none';
   const unv=gR().filter(r=>!r.verified).length;
-  v('rb').textContent=unv; v('rb').style.display=unv?'':'none';
+  v('rb').textContent=unv;v('rb').style.display=unv?'':'none';
 }
 
-/* ════════════════════════════════════════════
-   PRODUCTS
-════════════════════════════════════════════ */
+/* ── PRODUCTS ── */
 function renderProds(){
   let prods=gP();
-  const q=gv('psrch').toLowerCase(), cat=gv('pcatf'), stk=gv('pstf');
-  if(q) prods=prods.filter(p=>p.name.toLowerCase().includes(q)||p.nameBn.includes(q)||p.cat.includes(q));
-  if(cat) prods=prods.filter(p=>p.cat===cat);
-  if(stk==='in') prods=prods.filter(p=>p.inStock);
-  if(stk==='out') prods=prods.filter(p=>!p.inStock);
+  const q=gv('psrch').toLowerCase(),cat=gv('pcatf'),stk=gv('pstf');
+  if(q)prods=prods.filter(p=>p.name.toLowerCase().includes(q)||p.nameBn.includes(q)||p.cat.includes(q));
+  if(cat)prods=prods.filter(p=>p.cat===cat);
+  if(stk==='in')prods=prods.filter(p=>p.inStock);
+  if(stk==='out')prods=prods.filter(p=>!p.inStock);
   const tb=v('prodTb');
   if(!prods.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--gt)">No products found</td></tr>';return}
-  tb.innerHTML=prods.map(p=>`
-    <tr>
-      <td><div class="pico">${p.img?`<img src="${p.img}" onerror="this.style.display='none'">`:''}${!p.img?p.icon:''}</div></td>
-      <td><div style="font-weight:600;font-size:12px">${p.name}</div><div style="font-size:10px;color:var(--gt)">${p.nameBn}</div></td>
-      <td><span style="background:var(--gl);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600">${p.cat}</span></td>
-      <td><b>₹${p.price}</b>${p.oldPrice?`<br><s style="color:var(--gt);font-size:10px">₹${p.oldPrice}</s>`:''}</td>
-      <td><span class="spill ${p.inStock?'in':'out'}">${p.inStock?'In':'Out'}</span></td>
-      <td>${p.badge?`<span class="sbadge processing">${p.badge}</span>`:'—'}</td>
-      <td><div class="ta">
-        <button class="btn bn bsm" onclick="openEditP(${p.id})">✏️</button>
-        <button class="btn bg2 bsm" onclick="togStock(${p.id})">${p.inStock?'❌':'✅'}</button>
-        <button class="btn br bsm" onclick="conf('🗑️','Delete?','Product removed from store.',()=>delProd(${p.id}))">🗑</button>
-      </div></td>
-    </tr>`).join('');
+  tb.innerHTML=prods.map(p=>`<tr>
+    <td><div class="pico">${p.img?`<img src="${p.img}" onerror="this.style.display='none'">`:''}${!p.img?p.icon:''}</div></td>
+    <td><div style="font-weight:600;font-size:12px">${p.name}</div><div style="font-size:10px;color:var(--gt)">${p.nameBn}</div></td>
+    <td><span style="background:var(--gl);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600">${p.cat}</span></td>
+    <td><b>₹${p.price}</b>${p.oldPrice?`<br><s style="color:var(--gt);font-size:10px">₹${p.oldPrice}</s>`:''}</td>
+    <td><span class="spill ${p.inStock?'in':'out'}">${p.inStock?'In':'Out'}</span></td>
+    <td>${p.badge?`<span class="sbadge processing">${p.badge}</span>`:'—'}</td>
+    <td><div class="ta">
+      <button class="btn bn bsm" onclick="openEditP(${p.id})">✏️</button>
+      <button class="btn bg2 bsm" onclick="togStock(${p.id})">${p.inStock?'❌':'✅'}</button>
+      <button class="btn br bsm" onclick="conf('🗑️','Delete?','Product removed.',()=>delProd(${p.id}))">🗑</button>
+    </div></td></tr>`).join('');
 }
 
-function buildEGrid(){
-  v('egrid').innerHTML=EMLIST.map(e=>`<div class="eo" id="e-${e}" onclick="pickE('${e}')">${e}</div>`).join('');
-}
+function buildEGrid(){v('egrid').innerHTML=EMLIST.map(e=>`<div class="eo" id="e-${e}" onclick="pickE('${e}')">${e}</div>`).join('')}
 function pickE(e){document.querySelectorAll('.eo').forEach(el=>el.classList.remove('sel'));const el=v('e-'+e);if(el)el.classList.add('sel');sv('pf-icon',e);v('prevEmoji').textContent=e}
 function syncIcon(){v('prevEmoji').textContent=gv('pf-icon')||'📦'}
 function prevImg(){
-  const url=gv('pf-img');
-  const prev=v('imgprev'), em=v('prevEmoji');
-  if(url){
-    let img=prev.querySelector('img');
-    if(!img){img=document.createElement('img');prev.appendChild(img)}
-    img.src=url;img.style.display='block';
-    img.onload=()=>em.style.display='none';
-    img.onerror=()=>{img.style.display='none';em.style.display='block'};
-  } else {
-    const img=prev.querySelector('img');if(img)img.style.display='none';
-    em.style.display='block';
-  }
+  const url=gv('pf-img'),prev=v('imgprev'),em=v('prevEmoji');
+  if(url){let img=prev.querySelector('img');if(!img){img=document.createElement('img');prev.appendChild(img)}img.src=url;img.style.display='block';img.onload=()=>em.style.display='none';img.onerror=()=>{img.style.display='none';em.style.display='block'}}
+  else{const img=prev.querySelector('img');if(img)img.style.display='none';em.style.display='block'}
 }
-
 function clearPF(){
   ['pf-id','pf-name','pf-bn','pf-price','pf-old','pf-desc','pf-img'].forEach(id=>sv(id,''));
   sv('pf-cat','electrical');sv('pf-badge','');sv('pf-rating','5');sv('pf-stock','true');sv('pf-icon','📦');
@@ -804,177 +730,140 @@ function clearPF(){
   v('speced').innerHTML='';v('prevEmoji').textContent='📦';v('prevEmoji').style.display='block';
   const img=v('imgprev').querySelector('img');if(img)img.style.display='none';
 }
-
 function openAddP(){clearPF();v('pmTitle').textContent='Add New Product';v('prodFm').classList.add('on')}
 function openEditP(id){
   const p=gP().find(x=>x.id===id);if(!p)return;
   clearPF();v('pmTitle').textContent='Edit Product';
-  sv('pf-id',p.id);sv('pf-name',p.name);sv('pf-bn',p.nameBn);
-  sv('pf-cat',p.cat);sv('pf-badge',p.badge||'');sv('pf-price',p.price);
-  sv('pf-old',p.oldPrice||'');sv('pf-rating',p.rating||5);
-  sv('pf-stock',String(p.inStock));sv('pf-desc',p.desc||'');
-  sv('pf-icon',p.icon||'📦');sv('pf-img',p.img||'');
+  sv('pf-id',p.id);sv('pf-name',p.name);sv('pf-bn',p.nameBn);sv('pf-cat',p.cat);sv('pf-badge',p.badge||'');
+  sv('pf-price',p.price);sv('pf-old',p.oldPrice||'');sv('pf-rating',p.rating||5);sv('pf-stock',String(p.inStock));
+  sv('pf-desc',p.desc||'');sv('pf-icon',p.icon||'📦');sv('pf-img',p.img||'');
   document.querySelectorAll('.eo').forEach(el=>el.classList.remove('sel'));
   const el=v('e-'+p.icon);if(el)el.classList.add('sel');
-  v('prevEmoji').textContent=p.icon||'📦';
-  if(p.img) prevImg();
-  (p.specs||[]).forEach(s=>addSR(s[0],s[1]));
-  v('prodFm').classList.add('on');
+  v('prevEmoji').textContent=p.icon||'📦';if(p.img)prevImg();
+  (p.specs||[]).forEach(s=>addSR(s[0],s[1]));v('prodFm').classList.add('on');
 }
 function closePM(){v('prodFm').classList.remove('on')}
-
 function saveProd(){
-  const name=gv('pf-name'), nameBn=gv('pf-bn'), price=parseFloat(v('pf-price').value);
+  const name=gv('pf-name'),nameBn=gv('pf-bn'),price=parseFloat(v('pf-price').value);
   if(!name||!nameBn||!price){toast('⚠️ Fill Name, Bengali name & Price!');return}
   const specs=[];
-  v('speced').querySelectorAll('.srow').forEach(row=>{
-    const ins=row.querySelectorAll('input');
-    if(ins[0].value.trim()&&ins[1].value.trim()) specs.push([ins[0].value.trim(),ins[1].value.trim()]);
-  });
-  const prods=gP();
-  const eid=gv('pf-id');
+  v('speced').querySelectorAll('.srow').forEach(row=>{const ins=row.querySelectorAll('input');if(ins[0].value.trim()&&ins[1].value.trim())specs.push([ins[0].value.trim(),ins[1].value.trim()])});
+  const prods=gP(),eid=gv('pf-id');
   const pd={name,nameBn,cat:gv('pf-cat'),badge:gv('pf-badge')||null,price,oldPrice:parseFloat(v('pf-old').value)||null,rating:parseInt(v('pf-rating').value)||5,inStock:v('pf-stock').value==='true',desc:gv('pf-desc'),icon:gv('pf-icon')||'📦',img:gv('pf-img'),specs};
   if(eid){const i=prods.findIndex(p=>p.id===parseInt(eid));if(i>-1){prods[i]={...prods[i],...pd};toast('✅ Product updated!')}}
   else{pd.id=Date.now();prods.push(pd);toast('✅ Product added!')}
   saveProds(prods);closePM();renderProds();renderDash();
 }
-
-function addSR(k='',val=''){
-  const d=document.createElement('div');d.className='srow';
-  d.innerHTML=`<input type="text" placeholder="e.g. Wattage" value="${k}"><input type="text" placeholder="e.g. 9W" value="${val}"><button onclick="this.parentElement.remove()">✕</button>`;
-  v('speced').appendChild(d);
-}
-function togStock(id){const prods=gP();const p=prods.find(x=>x.id===id);if(p){p.inStock=!p.inStock;saveProds(prods);renderProds();toast(p.inStock?'✅ In Stock':'❌ Out of Stock')}}
+function addSR(k='',val=''){const d=document.createElement('div');d.className='srow';d.innerHTML=`<input type="text" placeholder="e.g. Wattage" value="${k}"><input type="text" placeholder="e.g. 9W" value="${val}"><button onclick="this.parentElement.remove()">✕</button>`;v('speced').appendChild(d)}
+function togStock(id){const ps=gP();const p=ps.find(x=>x.id===id);if(p){p.inStock=!p.inStock;saveProds(ps);renderProds();toast(p.inStock?'✅ In Stock':'❌ Out of Stock')}}
 function delProd(id){saveProds(gP().filter(p=>p.id!==id));renderProds();renderDash();toast('🗑️ Deleted')}
-function doReset(){conf('🔄','Reset Products?','All products replaced with 16 defaults.',()=>{saveProds(JSON.parse(JSON.stringify(DP)));renderProds();renderDash();toast('✅ Reset done')})}
+function doReset(){conf('🔄','Reset Products?','16 default products restored.',()=>{saveProds(JSON.parse(JSON.stringify(DP)));renderProds();renderDash();toast('✅ Reset done')})}
 function exportJ(){const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(gP(),null,2));a.download='ashirbad_products.json';a.click()}
 
-/* ════════════════════════════════════════════
-   ORDERS
-════════════════════════════════════════════ */
+/* ── ORDERS ── */
 function renderOrds(){
   let ords=gO();
   const sf=gv('osf');
-  if(sf) ords=ords.filter(o=>o.status===sf);
+  if(sf)ords=ords.filter(o=>o.status===sf);
   ords=[...ords].reverse();
   const tb=v('ordTb');
-  if(!ords.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--gt)">No orders found</td></tr>';updBadges();return}
-  tb.innerHTML=ords.map(o=>`
-    <tr>
-      <td><b>#${o.id||'—'}</b></td>
-      <td><div style="font-weight:600;font-size:12px">${o.customer}</div>${o.note?`<div style="font-size:10px;color:var(--gt)">${o.note}</div>`:''}</td>
-      <td><a href="tel:${o.phone}" style="color:var(--nv);text-decoration:none;font-size:11px">${o.phone}</a></td>
-      <td style="max-width:130px;font-size:10px;color:var(--gt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.items}</td>
-      <td><b>₹${o.total}</b></td>
-      <td style="font-size:10px">${o.delivery}</td>
-      <td>
-        <select class="sbadge ${o.status}" style="border:none;cursor:pointer;font-size:9px;font-weight:700;text-transform:uppercase;border-radius:20px;padding:2px 5px;background:${o.status==='pending'?'#fff3cd':o.status==='delivered'?'#d1e7dd':o.status==='cancelled'?'#f8d7da':'#cfe2ff'}" onchange="updOrdSt('${o.fbKey||o.id}',this.value,${o.fbKey?'true':'false'})">
-          <option value="pending" ${o.status==='pending'?'selected':''}>PENDING</option>
-          <option value="processing" ${o.status==='processing'?'selected':''}>PROCESSING</option>
-          <option value="delivered" ${o.status==='delivered'?'selected':''}>DELIVERED</option>
-          <option value="cancelled" ${o.status==='cancelled'?'selected':''}>CANCELLED</option>
-        </select>
-      </td>
-      <td style="font-size:10px;color:var(--gt)">${o.date}</td>
-      <td><div class="ta">
-        <button class="btn bn bsm" onclick="openEditO('${o.fbKey||o.id}')">✏️</button>
-        <button class="btn br bsm" onclick="conf('🗑️','Delete Order?','Order will be removed.',()=>delOrd('${o.fbKey||o.id}'))">🗑</button>
-      </div></td>
-    </tr>`).join('');
+  if(!ords.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--gt)">No orders yet. When customers order, they appear here automatically.</td></tr>';updBadges();return}
+  tb.innerHTML=ords.map(o=>`<tr>
+    <td><b>#${o.id||'—'}</b></td>
+    <td><div style="font-weight:600;font-size:12px">${o.customer}</div>${o.note?`<div style="font-size:10px;color:var(--gt)">${o.note}</div>`:''}</td>
+    <td><a href="tel:${o.phone}" style="color:var(--nv);text-decoration:none;font-size:11px">${o.phone}</a></td>
+    <td style="max-width:130px;font-size:10px;color:var(--gt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.items||''}</td>
+    <td><b>₹${o.total}</b></td>
+    <td style="font-size:10px">${o.delivery}</td>
+    <td><select class="sbadge ${o.status}" style="border:none;cursor:pointer;font-size:9px;font-weight:700;text-transform:uppercase;border-radius:20px;padding:2px 5px;background:${o.status==='pending'?'#fff3cd':o.status==='delivered'?'#d1e7dd':o.status==='cancelled'?'#f8d7da':'#cfe2ff'}" onchange="updOrdSt('${o.fbKey||o.id}',this.value,${!!o.fbKey})">
+      <option value="pending" ${o.status==='pending'?'selected':''}>PENDING</option>
+      <option value="processing" ${o.status==='processing'?'selected':''}>PROCESSING</option>
+      <option value="delivered" ${o.status==='delivered'?'selected':''}>DELIVERED</option>
+      <option value="cancelled" ${o.status==='cancelled'?'selected':''}>CANCELLED</option>
+    </select></td>
+    <td style="font-size:10px;color:var(--gt)">${o.date}</td>
+    <td><div class="ta">
+      <button class="btn bn bsm" onclick="openEditO('${o.fbKey||o.id}')">✏️</button>
+      <button class="btn br bsm" onclick="conf('🗑️','Delete Order?','Order will be removed.',()=>delOrd('${o.fbKey||o.id}'))">🗑</button>
+    </div></td></tr>`).join('');
   updBadges();
 }
-
 function clearOF(){['of-id','of-cust','of-ph','of-items','of-total','of-addr','of-note'].forEach(id=>sv(id,''));sv('of-status','pending');sv('of-dtype','Home Delivery')}
 function openAddO(){clearOF();v('omTitle').textContent='Add New Order';v('ordFm').classList.add('on')}
 function openEditO(key){
   const ords=gO();const o=ords.find(x=>x.fbKey===key||String(x.id)===String(key));if(!o)return;
   clearOF();v('omTitle').textContent='Edit Order';
-  sv('of-id',o.fbKey||o.id);sv('of-cust',o.customer);sv('of-ph',o.phone);
-  sv('of-items',o.items||'');sv('of-total',o.total);sv('of-dtype',o.delivery);
-  sv('of-addr',o.address||'');sv('of-status',o.status);sv('of-note',o.note||'');
+  sv('of-id',o.fbKey||o.id);sv('of-cust',o.customer);sv('of-ph',o.phone);sv('of-items',o.items||'');sv('of-total',o.total);sv('of-dtype',o.delivery);sv('of-addr',o.address||'');sv('of-status',o.status);sv('of-note',o.note||'');
   v('ordFm').classList.add('on');
 }
 function closeOM(){v('ordFm').classList.remove('on')}
-
 function saveOrd(){
-  const cust=gv('of-cust'), ph=gv('of-ph'), total=parseFloat(v('of-total').value);
+  const cust=gv('of-cust'),ph=gv('of-ph'),total=parseFloat(v('of-total').value);
   if(!cust||!ph||!total){toast('⚠️ Fill Customer, Phone & Total!');return}
   const od={customer:cust,phone:ph,items:gv('of-items'),total,delivery:gv('of-dtype'),address:gv('of-addr'),status:gv('of-status'),note:gv('of-note'),date:new Date().toISOString().split('T')[0]};
   const eid=gv('of-id');
   if(eid){
-    const ords=gO();
-    const i=ords.findIndex(o=>o.fbKey===eid||String(o.id)===eid);
+    const ords=gO(),i=ords.findIndex(o=>o.fbKey===eid||String(o.id)===eid);
     if(i>-1){ords[i]={...ords[i],...od};saveOrds(ords);toast('✅ Order updated!')}
-    else toast('⚠️ Order not found');
   } else {
     od.id=Date.now();
-    pushOrder(od);
+    const ords=gO();ords.push(od);
+    localStorage.setItem(OK,JSON.stringify(ords));
+    if(USE_FB&&db){try{db.ref('orders').push(od)}catch(e){}}
     toast('✅ Order added!');
   }
   closeOM();renderOrds();renderDash();
 }
-
-function updOrdSt(key, status, isFbKey){
-  if(USE_FB && db && isFbKey){
-    try{ db.ref('orders/'+key+'/status').set(status); }catch(e){}
-  }
-  const ords=gO();
-  const o=ords.find(x=>x.fbKey===key||String(x.id)===String(key));
+function updOrdSt(key,status,isFbKey){
+  if(USE_FB&&db&&isFbKey){try{db.ref('orders/'+key+'/status').set(status)}catch(e){}}
+  const ords=gO(),o=ords.find(x=>x.fbKey===key||String(x.id)===String(key));
   if(o){o.status=status;saveOrds(ords);updBadges();renderDash();toast('✅ Status → '+status)}
 }
 function delOrd(key){
-  if(USE_FB && db){try{ db.ref('orders/'+key).remove(); }catch(e){}}
+  if(USE_FB&&db){try{db.ref('orders/'+key).remove()}catch(e){}}
   const ords=gO().filter(o=>o.fbKey!==key&&String(o.id)!==String(key));
   localStorage.setItem(OK,JSON.stringify(ords));renderOrds();renderDash();toast('🗑️ Deleted');
 }
 function clrDel(){conf('🗑️','Clear Delivered?','All delivered orders removed.',()=>{const ords=gO().filter(o=>o.status!=='delivered');saveOrds(ords);renderOrds();renderDash();toast('✅ Cleared')})}
-function clrAllOrds(){saveOrds([]);if(USE_FB&&db){try{db.ref('orders').remove()}catch(e){}}renderOrds();renderDash();toast('✅ All orders cleared')}
+function clrAllOrds(){if(USE_FB&&db){try{db.ref('orders').remove()}catch(e){}}localStorage.setItem(OK,'[]');renderOrds();renderDash();toast('✅ All orders cleared')}
 
-/* ════════════════════════════════════════════
-   REVIEWS
-════════════════════════════════════════════ */
+/* ── REVIEWS ── */
 function renderRevs(){
   let revs=gR();
   const f=gv('rvf');
-  if(f==='verified') revs=revs.filter(r=>r.verified);
-  if(f==='unverified') revs=revs.filter(r=>!r.verified);
+  if(f==='verified')revs=revs.filter(r=>r.verified);
+  if(f==='unverified')revs=revs.filter(r=>!r.verified);
   revs=[...revs].reverse();
   const tb=v('revTb');
   if(!revs.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--gt)">No reviews</td></tr>';updBadges();return}
-  tb.innerHTML=revs.map(r=>`
-    <tr>
-      <td><div style="font-weight:600;font-size:12px">${r.name}</div><div style="font-size:10px;color:var(--gt)">${r.loc||''}</div></td>
-      <td style="color:#F4A828;font-size:12px">${'★'.repeat(r.stars)}</td>
-      <td style="max-width:160px;font-size:11px;color:var(--gt)">${r.text.slice(0,55)}${r.text.length>55?'...':''}</td>
-      <td style="font-size:10px;color:var(--gt)">${r.date}</td>
-      <td>
-        <select onchange="updRevV(${r.id},this.value==='true')" style="font-size:10px;padding:3px 6px;border:1px solid var(--gm);border-radius:6px;font-family:'DM Sans',sans-serif">
-          <option value="true" ${r.verified?'selected':''}>✅ Verified</option>
-          <option value="false" ${!r.verified?'selected':''}>❌ Unverified</option>
-        </select>
-      </td>
-      <td><div class="ta">
-        <button class="btn bn bsm" onclick="openEditR(${r.id})">✏️</button>
-        <button class="btn br bsm" onclick="conf('🗑️','Delete Review?','Review removed.',()=>delRev(${r.id}))">🗑</button>
-      </div></td>
-    </tr>`).join('');
+  tb.innerHTML=revs.map(r=>`<tr>
+    <td><div style="font-weight:600;font-size:12px">${r.name}</div><div style="font-size:10px;color:var(--gt)">${r.loc||''}</div></td>
+    <td style="color:#F4A828;font-size:12px">${'★'.repeat(r.stars)}</td>
+    <td style="max-width:160px;font-size:11px;color:var(--gt)">${r.text.slice(0,55)}${r.text.length>55?'...':''}</td>
+    <td style="font-size:10px;color:var(--gt)">${r.date}</td>
+    <td><select onchange="updRevV(${r.id},this.value==='true')" style="font-size:10px;padding:3px 6px;border:1px solid var(--gm);border-radius:6px;font-family:'DM Sans',sans-serif">
+      <option value="true" ${r.verified?'selected':''}>✅ Verified</option>
+      <option value="false" ${!r.verified?'selected':''}>❌ Unverified</option>
+    </select></td>
+    <td><div class="ta">
+      <button class="btn bn bsm" onclick="openEditR(${r.id})">✏️</button>
+      <button class="btn br bsm" onclick="conf('🗑️','Delete Review?','Review removed.',()=>delRev(${r.id}))">🗑</button>
+    </div></td></tr>`).join('');
   updBadges();
 }
-
 function clearRF(){['rv-id','rv-name','rv-loc','rv-text','rv-bn'].forEach(id=>sv(id,''));sv('rv-stars','5');sv('rv-ver','true')}
 function openAddR(){clearRF();v('rmTitle').textContent='Add Review';v('revFm').classList.add('on')}
 function openEditR(id){
   const r=gR().find(x=>x.id===id);if(!r)return;
   clearRF();v('rmTitle').textContent='Edit Review';
-  sv('rv-id',r.id);sv('rv-name',r.name);sv('rv-loc',r.loc||'');
-  sv('rv-stars',r.stars);sv('rv-text',r.text);sv('rv-bn',r.textBn||'');sv('rv-ver',String(r.verified));
+  sv('rv-id',r.id);sv('rv-name',r.name);sv('rv-loc',r.loc||'');sv('rv-stars',r.stars);sv('rv-text',r.text);sv('rv-bn',r.textBn||'');sv('rv-ver',String(r.verified));
   v('revFm').classList.add('on');
 }
 function closeRM(){v('revFm').classList.remove('on')}
 function saveRev(){
-  const name=gv('rv-name'), text=gv('rv-text'), stars=parseInt(v('rv-stars').value)||5;
+  const name=gv('rv-name'),text=gv('rv-text'),stars=parseInt(v('rv-stars').value)||5;
   if(!name||!text){toast('⚠️ Fill Name & Review!');return}
-  const revs=gR();const eid=gv('rv-id');
+  const revs=gR(),eid=gv('rv-id');
   const cols=['#E85D04','#0A1628','#1D9E75','#6f42c1','#dc3545','#0d6efd'];
   const rd={name,loc:gv('rv-loc'),stars,text,textBn:gv('rv-bn'),verified:v('rv-ver').value==='true',date:new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'}),color:cols[Math.floor(Math.random()*cols.length)]};
   if(eid){const i=revs.findIndex(r=>r.id===parseInt(eid));if(i>-1){revs[i]={...revs[i],...rd};toast('✅ Updated!')}}
@@ -984,24 +873,16 @@ function saveRev(){
 function updRevV(id,val){const revs=gR();const r=revs.find(x=>x.id===id);if(r){r.verified=val;saveRevs(revs);updBadges();toast(val?'✅ Verified':'❌ Unverified')}}
 function delRev(id){saveRevs(gR().filter(r=>r.id!==id));renderRevs();renderDash();toast('🗑️ Deleted')}
 
-/* ════════════════════════════════════════════
-   SETTINGS
-════════════════════════════════════════════ */
+/* ── SETTINGS ── */
 function chPw(){const pw=gv('npw');if(!pw){toast('⚠️ Enter new password');return}localStorage.setItem(PK,pw);sv('npw','');toast('✅ Password changed!')}
 function exportAll(){const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify({products:gP(),orders:gO(),reviews:gR()},null,2));a.download='ashirbad_all.json';a.click();toast('📥 Exported!')}
 
-/* ════════════════════════════════════════════
-   CONFIRM & TOAST
-════════════════════════════════════════════ */
+/* ── CONFIRM & TOAST ── */
 let confCb=null;
 function conf(ico,tit,msg,cb){v('ci').textContent=ico;v('ctit').textContent=tit;v('cmsg').textContent=msg;confCb=cb;v('cm').classList.add('on')}
 v('cok').onclick=()=>{if(confCb)confCb();closeConf()};
 function closeConf(){v('cm').classList.remove('on');confCb=null}
 function toast(msg){const t=v('toastEl');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
-
-// Set Firebase URL display on load
-const su=getStoredFbUrl();
-if(su) setTimeout(()=>{const el=v('fbUrlDisplay');if(el)el.textContent=su;const inp=v('fbUrlInput');if(inp)inp.value=su},0);
 </script>
 </body>
 </html>
